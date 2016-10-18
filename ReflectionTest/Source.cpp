@@ -141,13 +141,34 @@ constexpr auto GetTypeName()
   constexpr const char* typeName = CONSTEXPR_FUNCTION_SIGNATURE;
 
   constexpr size_t totalLength = StringLength(typeName);
-  constexpr size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), ' ');
-  constexpr size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 1;
 
-  ConstexprToken<typeNameLength> token{ typeName + lastSpace + 1 };
+  // TODO: This computation will have to be more complicated for templated classes and structs.
+  
+
+
+  #if defined(__clang__)
+    constexpr size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '=');
+    constexpr size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 2;
+
+    ConstexprToken<typeNameLength> token{ typeName + lastSpace + 2 };
+  #elif defined(_MSC_VER)
+    constexpr size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), ' ');
+    constexpr size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 1;
+
+    ConstexprToken<typeNameLength> token{ typeName + lastSpace + 1 };
+  #endif
 
   return token;
+
+  //ConstexprToken<totalLength> token2{ typeName};
+  //return token2;
 }
+
+template<typename Woo, typename Boy>
+struct TemplatedThing
+{
+
+};
 
 namespace Function
 {
@@ -161,10 +182,8 @@ int main()
   std::cout << doesThisWork.data() << std::endl;
   std::cout << GetTypeName<Test::UrSun>().data() << std::endl;
   std::cout << GetTypeName<UrKidClass>().data() << std::endl;
-
-  constexpr size_t required_length = GetTypeName<UrKidClass>().Size();
-  std::cout << required_length << std::endl;
   std::cout << GetTypeName<UrKidStruct>().data() << std::endl;
+  std::cout << GetTypeName<TemplatedThing<UrKidClass, UrKidStruct>>().data() << std::endl;
 
   constexpr auto func1 = GetFunctionSignature<decltype(Function::Func1)*, Function::Func1>();
   //constexpr auto func2 = GetFunctionSignature<decltype(Func2)*, Func2>();

@@ -54,13 +54,13 @@ private:
 };
 
 
-constexpr size_t GetLastInstanceOfCharacter(const char *aTypeNameString, size_t aSize, char aCharacter)
+constexpr size_t GetLastInstanceOfCharacter(const char *aString, size_t aSize, char aCharacter)
 {
   size_t toReturn = aSize + 1;
 
   while (aSize != 0)
   {
-    if (aTypeNameString[aSize] == aCharacter)
+    if (aString[aSize] == aCharacter)
     {
       toReturn = aSize;
       break;
@@ -72,7 +72,7 @@ constexpr size_t GetLastInstanceOfCharacter(const char *aTypeNameString, size_t 
 }
 
 
-constexpr size_t GetFirstInstanceOfCharacter(const char *aTypeNameString, size_t aSize, char aCharacter)
+constexpr size_t GetFirstInstanceOfCharacter(const char *aString, size_t aSize, char aCharacter)
 {
   size_t toReturn = aSize + 1;
 
@@ -80,9 +80,9 @@ constexpr size_t GetFirstInstanceOfCharacter(const char *aTypeNameString, size_t
 
   while (i != aSize)
   {
-    if (aTypeNameString[aSize] == aCharacter)
+    if (aString[i] == aCharacter)
     {
-      toReturn = aSize;
+      toReturn = i;
       break;
     }
     ++i;
@@ -142,20 +142,19 @@ constexpr auto GetTypeName()
 
   constexpr size_t totalLength = StringLength(typeName);
 
-  // TODO: This computation will have to be more complicated for templated classes and structs.
-  
-
-
+  // TODO: Should also work for GCC.
   #if defined(__clang__)
     constexpr size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '=');
     constexpr size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 2;
 
     ConstexprToken<typeNameLength> token{ typeName + lastSpace + 2 };
   #elif defined(_MSC_VER)
-    constexpr size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), ' ');
-    constexpr size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 1;
+    constexpr size_t firstArrow = GetFirstInstanceOfCharacter(typeName, StringLength(typeName), '<');
+    constexpr size_t endOfKeyword = typeName[firstArrow + 1] == 's' ? 8 : 7;
+    constexpr size_t typeNameLength = totalLength - firstArrow - endOfKeyword - GetTypeEnd();
 
-    ConstexprToken<typeNameLength> token{ typeName + lastSpace + 1 };
+    // TODO: Remove struct and class keywords from templated output.
+    ConstexprToken<typeNameLength> token{ typeName + firstArrow + endOfKeyword };
   #endif
 
   return token;

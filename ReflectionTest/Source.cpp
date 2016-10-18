@@ -33,12 +33,13 @@ template <size_t Size>
 struct ConstexprToken
 {
   constexpr ConstexprToken(const char *aBegin)
+    : mData{'0'}
   {
     for (size_t i = 0; i < Size; i++)
     {
       mData[i] = aBegin[i];
     }
-    
+
     mData[Size] = '\0';
   }
 
@@ -112,25 +113,8 @@ constexpr auto GetTypeName()
   //int endTrim = 5;
   
 
-  //size_t beginTrim = GetTypeStart(typeName);
-  //if (*(typeName + 39) == 's') // Where class or struct appears in MSVC
-  //{
-  //  beginTrim = 46; //Where typename begins appearing in MSVC if struct.
-  //}
-  //else
-  //{
-  //  beginTrim = 45; //Where typename begins appearing in MSVC if class.
-  //}
-
   //const char *fullTypeName = typeName + beginTrim;
   const char *fullTypeName = typeName;
-
-  //for (size_t i = 0; i < required_length; ++i)
-  //{
-  //  toReturn[i] = *(fullTypeName + i);
-  //}
-
-  //toReturn[required_length + 1] = '\0';
 
   return fullTypeName;
 }

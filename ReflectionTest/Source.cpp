@@ -1,4 +1,5 @@
 #include <array>
+#include <iostream>
 
 #define CONSTEXPR_FUNCTION_SIGNATURE __FUNCSIG__
 
@@ -43,17 +44,10 @@ struct ConstexprToken
     mData[Size] = '\0';
   }
 
-  constexpr void Copy(const char *aBegin)
-  {
-    //for (size_t i = 0; i < Size; i++)
-    //{
-    //  mData[i] = aBegin[i];
-    //}
-    //
-    //mData[Size] = '\0';
-  }
+  constexpr const char* Data() const { return mData; };
+  constexpr const char* data() const { return mData; };
 
-
+private:
   char mData[Size + 1];
 };
 
@@ -94,11 +88,9 @@ template <typename T, T aFunction>
 constexpr auto GetFunctionSignature()
 {
   constexpr const char* typeName = CONSTEXPR_FUNCTION_SIGNATURE;
-  //size_t beginTrim = GetTypeStart(typeName);
 
   constexpr size_t required_length = StringLength(typeName);
   ConstexprToken<required_length> test{ typeName };
-  //const char *fullTypeName = typeName;
 
   return test;
 }
@@ -107,14 +99,11 @@ template <typename T>
 constexpr auto GetTypeName()
 {
   constexpr const char* typeName = CONSTEXPR_FUNCTION_SIGNATURE;
-  //constexpr size_t required_length = StringLength(typeName) - 7;
-  //constexpr size_t test = StringLength(typeName) + 1;
 
-  //int endTrim = 5;
-  
-
-  //const char *fullTypeName = typeName + beginTrim;
   const char *fullTypeName = typeName;
+
+  constexpr size_t required_length = StringLength(typeName);
+  ConstexprToken<required_length> test{ typeName };
 
   return fullTypeName;
 }
@@ -125,16 +114,16 @@ void Func2(UrKidClass aStruct) {}
 int main()
 {
   constexpr const char *doesThisWork = GetTypeName<Test::Test2::UrMum>();
-  printf("%s\n", GetTypeName<Test::Test2::UrMum>());
-  printf("%s\n", GetTypeName<Test::UrSun>());
-  printf("%s\n", GetTypeName<UrKidClass>());
+  std::cout << doesThisWork << std::endl;
+  std::cout << GetTypeName<Test::UrSun>() << std::endl;
+  std::cout << GetTypeName<UrKidClass>() << std::endl;
 
   constexpr size_t required_length = StringLength(GetTypeName<UrKidClass>());
-  printf("%d\n", required_length);
-  printf("%s\n", GetTypeName<UrKidStruct>());
+  std::cout << required_length << std::endl;
+  std::cout << GetTypeName<UrKidStruct>() << std::endl;
 
   constexpr auto func1 = GetFunctionSignature<decltype(Func1)*, Func1>();
   //constexpr auto func2 = GetFunctionSignature<decltype(Func2)*, Func2>();
-  printf("%s\n", func1.mData);
+  std::cout << func1.data() << std::endl;
   //printf("%s\n", func2.mData);
 }

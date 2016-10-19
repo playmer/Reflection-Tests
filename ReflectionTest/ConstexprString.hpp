@@ -17,7 +17,7 @@ template <size_t tConstSize>
 struct ConstexprToken
 {
   constexpr ConstexprToken(const char *aBegin)
-    : mData{ '0' }
+    : mData{ '\0' }
   {
     for (size_t i = 0; i < tConstSize; i++)
     {
@@ -25,6 +25,19 @@ struct ConstexprToken
     }
 
     mData[tConstSize] = '\0';
+  }
+
+  template<size_t tDifferentSize>
+  constexpr ConstexprToken(const ConstexprToken<tDifferentSize> &aToken)
+    : mData{ '0' }
+  {
+    static_assert(tDifferentSize <= tConstSize, "Trying to copy a ConstexprToken to a ConstexprToken of too small a size.");
+    for (size_t i = 0; i < tDifferentSize; i++)
+    {
+      mData[i] = aToken.data()[i];
+    }
+
+    mData[tDifferentSize] = '\0';
   }
 
   constexpr size_t Size() const { return tConstSize; };

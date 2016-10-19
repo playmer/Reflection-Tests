@@ -37,6 +37,10 @@ int main()
   std::cout << GetTypeName<UrKidStruct>().data() << std::endl;
   std::cout << GetTypeName<TemplatedThing<UrKidClass, UrKidStruct>>().data() << std::endl;
 
+
+  constexpr ConstexprToken<64> copyTest{doesThisWork};
+  std::cout << "Copying works: " << copyTest.data() << std::endl;
+
   constexpr auto func1 = GetFunctionSignature<decltype(Function::Func1)*, Function::Func1>();
   //constexpr auto func2 = GetFunctionSignature<decltype(Func2)*, Func2>();
   std::cout << func1.data() << std::endl;

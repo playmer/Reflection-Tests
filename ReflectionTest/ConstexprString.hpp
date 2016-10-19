@@ -13,6 +13,16 @@ constexpr size_t StringLength(const char *aString)
   return i;
 }
 
+
+constexpr size_t GetNumberOfTokens(const char *aString)
+{
+  size_t num = 0;
+
+
+
+  return num;
+}
+
 template <size_t tConstSize>
 struct ConstexprToken
 {

@@ -75,8 +75,3 @@ constexpr auto GetTypeName()
   //ConstexprToken<totalLength> token2{ typeName};
   //return token2;
 }
-
-struct Type
-{
-  ConstexprToken<64> mName;
-};

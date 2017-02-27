@@ -244,8 +244,9 @@ struct ParseArguments<First, Rest...>
 template <typename Return, typename Enable = void>
 struct Binding {};
 
+
 template <typename Return, typename... Arguments>
-struct Binding<Return(*)(Arguments...)>
+struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Return>::value == false>::type >
 {
   using FunctionSignature = Return(*)(Arguments...);
 
@@ -270,6 +271,30 @@ struct Binding<Return(*)(Arguments...)>
   }
 };
 
+template <typename Return, typename... Arguments>
+struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Return>::value>::type >
+{
+  using FunctionSignature = Return(*)(Arguments...);
+
+  template <FunctionSignature BoundFunc>
+  static Any Caller(std::vector<Any>& arguments)
+  {
+    size_t i = 0;
+    BoundFunc(arguments.at(i++).As<Arguments>()...);
+    return Any();
+  }
+
+  template <FunctionSignature BoundFunc>
+  static std::unique_ptr<Function> BindFunction(const char *name)
+  {
+    auto function = std::make_unique<Function>(name, TypeId<ObjectType>(), true);
+    ParseArguments<Arguments...>::Parse(function.get());
+
+    function->SetCaller(Caller<BoundFunc>);
+
+    return std::move(function);
+  }
+};
 
 template <typename Return, typename ObjectType, typename... Arguments>
 struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std::is_void<Return>::value == false>::type>

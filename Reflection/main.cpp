@@ -85,31 +85,15 @@ int main()
   auto testRange = urKid->GetFirstFunction("Test");
 
   std::vector<Any> args;
-  args.emplace_back(Any(mum));
+  args.emplace_back(Any(&mum));
   args.emplace_back(Any(1));
 
 
   std::vector<Any> args2;
-  args2.emplace_back(Any(kid));
+  args2.emplace_back(Any(&kid));
 
   auto doesThisWork = printRange->Invoke(args);
-  std::cout << "Return: " << doesThisWork.As<float>();
+  std::cout << "Return: " << doesThisWork.As<float>() << std::endl;
 
   auto doesThisWork2 = testRange->Invoke(args2);
-
-  //constexpr auto doesThisWork = GetTypeName<Test::Test2::UrMum>();
-  //std::cout << doesThisWork.data() << std::endl;
-  //std::cout << GetTypeName<Test::UrSun>().data() << std::endl;
-  //std::cout << GetTypeName<UrKidClass>().data() << std::endl;
-  //std::cout << GetTypeName<UrKidStruct>().data() << std::endl;
-  //std::cout << GetTypeName<TemplatedThing<UrKidClass, UrKidStruct>>().data() << std::endl;
-  //
-  //
-  //constexpr ConstexprToken<64> copyTest{doesThisWork};
-  //std::cout << "Copying works: " << copyTest.data() << std::endl;
-  //
-  //constexpr auto func1 = GetFunctionSignature<decltype(FunctionTests::Func1)*, FunctionTests::Func1>();
-  ////constexpr auto func2 = GetFunctionSignature<decltype(Func2)*, Func2>();
-  //std::cout << func1.data() << std::endl;
-  ////printf("%s\n", func2.mData);
 }

@@ -304,10 +304,10 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
   template <FunctionSignature BoundFunc>
   static Any Caller(std::vector<Any>& arguments)
   {
-    auto self = arguments.at(0).As<ObjectType>();
+    auto self = arguments.at(0).As<ObjectType*>();
 
     size_t i = 1;
-    auto capture = (self.*BoundFunc)(arguments.at(i++).As<Arguments>()...);
+    auto capture = (self->*BoundFunc)(arguments.at(i++).As<Arguments>()...);
     Any toReturn{ &capture, TypeId<Return>() };
     return toReturn;
   }
@@ -334,10 +334,10 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
   template <FunctionSignature BoundFunc>
   static Any Caller(std::vector<Any>& arguments)
   {
-    auto self = arguments.at(0).As<ObjectType>();
+    auto self = arguments.at(0).As<ObjectType*>();
 
     size_t i = 1;
-    (self.*BoundFunc)(arguments.at(i++).As<Arguments>()...);
+    (self->*BoundFunc)(arguments.at(i++).As<Arguments>()...);
     
     return Any();
   }
@@ -453,7 +453,7 @@ inline Type* TypeId<Name>()       \
 
 
 #define DefineExternalType(Name) \
-Type Types::Name##_Type{#Name, reinterpret_cast<Name*>(nullptr)};
+Type Types::Name##_Type{#Name, static_cast<Name*>(nullptr)};
 
 DeclareExternalType(i8)
 DeclareExternalType(i16)
@@ -475,7 +475,7 @@ static Type* GetStaticType(); \
 Type* GetType();
 
 #define DefineType(Name)                                   \
-Type Name::sType{#Name, reinterpret_cast<Name*>(nullptr)}; \
+Type Name::sType{#Name, static_cast<Name*>(nullptr)}; \
 Type* Name::GetStaticType() { return &sType; };            \
 Type* Name::GetType() { return &sType; };
 

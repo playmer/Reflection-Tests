@@ -13,7 +13,6 @@ namespace Test
       float Print(int)
       {
         std::cout << x << " " << y << " " << z << " " << w << " " << std::endl;
-
         return 42.0f;
       }
 
@@ -36,10 +35,9 @@ class UrKidClass
 {
 public:
   DeclareType(UrKidClass)
-  int Test()
+  void Test()
   {
     std::cout << "UrKid" << std::endl;
-    return 42;
   }
 };
 DefineType(UrKidClass);
@@ -81,18 +79,23 @@ int main()
   urMum->AddFunction(std::move(func));
 
   Test::Test2::UrMum mum;
+  UrKidClass kid;
 
   auto printRange = urMum->GetFirstFunction("Print");
+  auto testRange = urKid->GetFirstFunction("Test");
 
   std::vector<Any> args;
   args.emplace_back(Any(mum));
-
-
   args.emplace_back(Any(1));
 
-  auto doesThisWork = printRange->Invoke(args);
 
+  std::vector<Any> args2;
+  args2.emplace_back(Any(kid));
+
+  auto doesThisWork = printRange->Invoke(args);
   std::cout << "Return: " << doesThisWork.As<float>();
+
+  auto doesThisWork2 = testRange->Invoke(args2);
 
   //constexpr auto doesThisWork = GetTypeName<Test::Test2::UrMum>();
   //std::cout << doesThisWork.data() << std::endl;

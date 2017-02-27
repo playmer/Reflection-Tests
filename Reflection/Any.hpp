@@ -60,7 +60,7 @@ public:
 
   void Clear()
   {
-    if ((nullptr == mType) && (nullptr == mType->GetDestructor()))
+    if ((nullptr == mType) || (nullptr == mType->GetDestructor()))
     {
       return;
     }

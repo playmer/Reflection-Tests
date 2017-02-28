@@ -3,6 +3,7 @@
 #include "Type.hpp"
 
 
+DefineExternalType(void)
 DefineExternalType(i8)
 DefineExternalType(i16)
 DefineExternalType(i32)

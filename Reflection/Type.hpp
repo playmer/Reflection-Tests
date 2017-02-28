@@ -7,21 +7,37 @@
 #include "Reflection.hpp"
 
 template <typename T>
-void GenericDestruct(void* aMemory)
+inline void GenericDestruct(void* aMemory)
 {
   (static_cast<T*>(aMemory))->~T();
 }
 
 template <typename T>
-void GenericDefaultConstruct(void* aMemory)
+inline void GenericDefaultConstruct(void* aMemory)
 {
   new (aMemory) T();
 }
 
 template <typename T>
-void GenericCopyConstruct(void* aObject, void* aMemory)
+inline void GenericCopyConstruct(void* aObject, void* aMemory)
 {
   new (aMemory) T(*static_cast<T*>(aObject));
+}
+
+
+template <>
+inline void GenericDestruct<void>(void* aMemory)
+{
+}
+
+template <>
+inline void GenericDefaultConstruct<void>(void* aMemory)
+{
+}
+
+template <>
+inline void GenericCopyConstruct<void>(void* aObject, void* aMemory)
+{
 }
 
 class Type
@@ -30,7 +46,7 @@ public:
   using DefaultConstructor = void(*)(void*);
   using CopyConstructor = void(*)(void*, void*);
   using Destructor = void(*)(void*);
-
+  
   template <typename T>
   explicit Type(const char *aName, T *);
 
@@ -106,13 +122,41 @@ private:
 #include "Property.hpp"
 #include "Field.hpp"
 
+//template<>
+//inline Type::Type<void>(const char *aName, void *)
+//  : mName(aName),
+//    mHash(std::hash<std::string>{}(mName)),
+//    mAllocatedSize(0),
+//    mStoredSize(0),
+//    mDefaultConstructor(nullptr),
+//    mCopyConstructor(nullptr),
+//    mDestructor(nullptr)
+//{
+//
+//}
+
+
+
+template<typename T>
+inline auto SizeOf()
+{
+  return sizeof(T);
+}
+
+template<>
+inline auto SizeOf<void>()
+{
+  return 0;
+}
+
+
 
 template <typename T>
 inline Type::Type(const char *aName, T *)
   : mName(aName),
     mHash(std::hash<std::string>{}(mName)),
-    mAllocatedSize(sizeof(T)),
-    mStoredSize(sizeof(T)),
+    mAllocatedSize(SizeOf<T>()),
+    mStoredSize(SizeOf<T>()),
     mDefaultConstructor(GenericDefaultConstruct<T>),
     mCopyConstructor(GenericCopyConstruct<T>),
     mDestructor(GenericDestruct<T>)
@@ -124,8 +168,8 @@ template <typename T>
 inline Type::Type(T *)
   : mName(GetTypeName<T>().data()),
     mHash(std::hash<std::string>{}(mName)),
-    mAllocatedSize(sizeof(T)),
-    mStoredSize(sizeof(T)),
+    mAllocatedSize(SizeOf<T>()),
+    mStoredSize(SizeOf<T>()),
     mDefaultConstructor(GenericDefaultConstruct<T>),
     mCopyConstructor(GenericCopyConstruct<T>),
     mDestructor(GenericDestruct<T>)
@@ -169,6 +213,7 @@ inline Type* TypeId<Name>()       \
 #define DefineExternalType(Name) \
 Type Types::Name##_Type{#Name, static_cast<Name*>(nullptr)};
 
+DeclareExternalType(void)
 DeclareExternalType(i8)
 DeclareExternalType(i16)
 DeclareExternalType(i32)

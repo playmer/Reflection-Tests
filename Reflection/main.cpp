@@ -102,9 +102,6 @@ int main()
   std::cout << "Return: " << urMum->GetFirstFunction("Print")->Invoke(&mum, 1).As<float>() << std::endl;
   auto doesThisWork2 = urKid->GetFirstFunction("Test")->Invoke(&kid);
 
-
-
-
   auto property = urMum->GetFirstProperty("X");
 
   property->GetSetter()->Invoke(&mum, 5);

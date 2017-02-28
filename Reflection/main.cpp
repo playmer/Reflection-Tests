@@ -90,6 +90,8 @@ int main()
   auto func = BindFunction<decltype(&Test::Test2::UrMum::Print),&Test::Test2::UrMum::Print>("Print");
   auto prop = BindProperty<decltype(&Test::Test2::UrMum::GetX), &Test::Test2::UrMum::GetX,
                            decltype(&Test::Test2::UrMum::SetX), &Test::Test2::UrMum::SetX>("X");
+  auto prop2 = BindProperty<nullptr_t, nullptr,
+                            decltype(&Test::Test2::UrMum::SetX), &Test::Test2::UrMum::SetX>("X");
 
   urMum->AddFunction(std::move(func));
   urMum->AddProperty(std::move(prop));

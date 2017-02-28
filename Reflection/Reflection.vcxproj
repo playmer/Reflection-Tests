@@ -113,6 +113,7 @@
   <ItemGroup>
     <ClInclude Include="Algorithm.hpp" />
     <ClInclude Include="Any.hpp" />
+    <ClInclude Include="Attribute.hpp" />
     <ClInclude Include="CacheOrderedSet.hpp" />
     <ClInclude Include="ConstexprString.hpp" />
     <ClInclude Include="Field.hpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="Types.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Type.cpp" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Types.hpp"
 #include "Function.hpp"
 
 // TODO: Have some requirements on the types of setters and getters.

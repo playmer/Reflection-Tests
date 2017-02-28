@@ -51,6 +51,9 @@
     <ClInclude Include="Field.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Attribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -58,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="Type.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Attribute.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

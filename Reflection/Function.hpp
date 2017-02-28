@@ -233,6 +233,18 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
   }
 };
 
+
+
+template <>
+struct Binding<nullptr_t>
+{
+  template <nullptr_t BoundFunc>
+  static std::unique_ptr<Function> BindFunction(const char *name)
+  {
+    return std::unique_ptr<Function>();
+  }
+};
+
 template <typename FunctionSignature, FunctionSignature BoundFunc>
 static std::unique_ptr<Function> BindFunction(const char *name)
 {

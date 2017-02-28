@@ -36,6 +36,28 @@ inline void GenericDoNothing(byte *aMemory)
 {
 }
 
+
+
+
+template <typename Return, typename Arg = Return>
+struct DecomposeFunctionType {};
+
+template <typename Return, typename Event>
+struct DecomposeFunctionType<Return(*)(Event*)>
+{
+  using ReturnType = Return;
+  using EventType = Event;
+};
+
+template <typename Return, typename Object, typename Event>
+struct DecomposeFunctionType<Return(Object::*)(Event*)>
+{
+  using ReturnType = Return;
+  using ObjectType = Object;
+  using EventType = Event;
+};
+
+
 inline void runtime_assert(bool aValue, const char *aMessage = "")
 {
   if (false == aValue)

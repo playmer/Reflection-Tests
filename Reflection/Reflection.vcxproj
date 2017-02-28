@@ -115,7 +115,9 @@
     <ClInclude Include="Any.hpp" />
     <ClInclude Include="CacheOrderedSet.hpp" />
     <ClInclude Include="ConstexprString.hpp" />
+    <ClInclude Include="Function.hpp" />
     <ClInclude Include="Iterator.hpp" />
+    <ClInclude Include="Property.hpp" />
     <ClInclude Include="Range.hpp" />
     <ClInclude Include="Reflection.hpp" />
     <ClInclude Include="Type.hpp" />

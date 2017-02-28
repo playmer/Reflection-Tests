@@ -158,8 +158,6 @@ public:
       return range(end(), end());
     }
 
-    //return range{ FindFirst(aKey), FindLast(aKey) };
-
     auto iter = CacheFriendlyLowerBound(mData.begin(),
                                         mData.end(),
                                         aKey,

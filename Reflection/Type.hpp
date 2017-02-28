@@ -104,6 +104,7 @@ private:
 
 #include "Function.hpp"
 #include "Property.hpp"
+#include "Field.hpp"
 
 
 template <typename T>

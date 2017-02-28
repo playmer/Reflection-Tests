@@ -23,6 +23,36 @@ class Any
 {
 public:
 
+
+  template <typename... Rest> struct ParseArguments;
+
+  template <>
+  struct ParseArguments<>
+  {
+    inline static void Parse(std::vector<Any> &aArguments)
+    {
+    }
+  };
+
+  template <typename First, typename... Rest>
+  struct ParseArguments<First, Rest...>
+  {
+    inline static void Parse(std::vector<Any> &aArguments, First aFirst, Rest ...aRest)
+    {
+      aArguments.emplace_back(aFirst);
+      ParseArguments<Rest...>::Parse(aArguments, aRest...);
+    }
+  };
+
+  template <typename ...Arguments>
+  static std::vector<Any> FromVariadic(Arguments...aArguments)
+  {
+    std::vector<Any> arguments;
+    ParseArguments<Arguments...>::Parse(arguments, aArguments...);
+
+    return arguments;
+  }
+
   Any()
   {
     mType = nullptr;

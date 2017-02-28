@@ -36,57 +36,6 @@ public:
     }
   }
 
-  //bool operator<(const Function&aRight) const
-  //{
-  //  return mName < aRight.mName;
-  //}
-  //
-  //bool operator==(const Function&aRight) const
-  //{
-  //  // Check to see if it's the same Function object.
-  //  if (this == &aRight)
-  //  {
-  //    return true;
-  //  }
-  //
-  //  // Check to see if we use the same function to invoke.
-  //  if (mCaller == aRight.mCaller)
-  //  {
-  //    return true;
-  //  }
-  //
-  //  // Make sure we're both the same type of function.
-  //  if (mStatic != aRight.mStatic)
-  //  {
-  //    return false;
-  //  }
-  //
-  //  // Make sure our owning type is the same.
-  //  if (mType != aRight.mType)
-  //  {
-  //    return false;
-  //  }
-  //
-  //  // Before we start comparing argument types, check to make sure we have the same
-  //  // amount of arguments.
-  //  if (mArguments.size() != aRight.mArguments.size())
-  //  {
-  //    return false;
-  //  }
-  //
-  //  // If all the types are the same (we don't check argument names.), then this is 
-  //  // effectively the same type of function.
-  //  for (size_t i = 0; i < mArguments.size(); ++i)
-  //  {
-  //    if (mArguments[i].mType != aRight.mArguments[i].mType)
-  //    {
-  //      return false;
-  //    }
-  //  }
-  //
-  //  return true;;
-  //}
-
   // Will return default constructed Any if the arguments fail.
   Any Invoke(std::vector<Any> &aArguments) const
   {
@@ -106,6 +55,17 @@ public:
     }
 
     return mCaller(aArguments);
+  }
+
+
+
+  // Will return default constructed Any if the arguments fail.
+  template <typename ...Arguments>
+  Any Invoke(Arguments...aArguments) const
+  {
+    auto args = Any::FromVariadic<Arguments...>(aArguments...);
+
+    return Invoke(args);
   }
 
   void AddParameter(Type *aType, const char *aName = "")
@@ -270,3 +230,9 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
     return std::move(function);
   }
 };
+
+template <typename FunctionSignature, FunctionSignature BoundFunc>
+static std::unique_ptr<Function> BindFunction(const char *name)
+{
+  return Binding<FunctionSignature>::BindFunction<BoundFunc>(name);
+}

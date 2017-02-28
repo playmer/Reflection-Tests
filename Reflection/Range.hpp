@@ -1,21 +1,21 @@
 #pragma once
 
-template <typename Type>
+template <typename TemplateType>
 class Range
 {
 public:
-  Range(Type &aBegin, Type &aEnd)
+  Range(const TemplateType &aBegin, const TemplateType &aEnd)
     : mBegin(aBegin), mEnd(aEnd) {};
 
   bool IsRange() { return mBegin != mEnd; }
 
-  const Type begin() const { return mBegin; }
-  const Type end() const { return mEnd; }
-  Type begin() { return mBegin; }
-  Type end() { return mEnd; }
+  const TemplateType begin() const { return mBegin; }
+  const TemplateType end() const { return mEnd; }
+  TemplateType begin() { return mBegin; }
+  TemplateType end() { return mEnd; }
 
-  typename Type::difference_type size() const { return mEnd - mBegin; }
+  typename TemplateType::difference_type size() const { return mEnd - mBegin; }
 protected:
-  Type mBegin;
-  Type mEnd;
+  TemplateType mBegin;
+  TemplateType mEnd;
 };

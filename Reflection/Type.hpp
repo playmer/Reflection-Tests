@@ -61,12 +61,12 @@ public:
 
   void AddFunction(std::unique_ptr<Function> aFunction);
 
-  //CacheOrderedSet<std::string, std::unique_ptr<Function>>::range GetFunctionRange(const char *aName)
-  //{
-  //  std::string name{ aName };
-  //
-  //  return mFunctions.FindAll(name);
-  //}
+  CacheOrderedSet<std::string, std::unique_ptr<Function>>::range GetFunctionRange(const char *aName)
+  {
+    std::string name{ aName };
+  
+    return mFunctions.FindAll(name);
+  }
 
   Function* GetFirstFunction(const char *aName)
   {

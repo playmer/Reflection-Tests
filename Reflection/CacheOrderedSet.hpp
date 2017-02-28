@@ -98,6 +98,31 @@ private:
     }
   }
 
+  
+  template <typename KeyPossibleType>
+  ContainedType* FindLastContainedType(const KeyPossibleType &aKey)
+  {
+    // Empty optimization
+    if (0 == size())
+    {
+      return reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + size()));
+    }
+
+    auto iter = CacheFriendlyUpperBound(mData.begin(),
+                                        mData.end(),
+                                        aKey,
+                                        comparatorUpperBound<KeyPossibleType, StoredType>);
+
+    if (iter != mData.begin() && (--iter)->first == aKey)
+    {
+      return reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + (iter - mData.begin())));
+    }
+    else
+    {
+      return reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + size()));
+    }
+  }
+
 public:
 
   template <typename KeyPossibleType>
@@ -112,46 +137,39 @@ public:
     return const_cast<const ContainedType*>(FindFirstContainedType(aKey));
   }
 
-
-
   template <typename KeyPossibleType>
-  iterator FindLast(const KeyPossibleType &aKey) const
+  iterator FindLast(const KeyPossibleType &aKey)
   {
-    // Empty Optimization
-    if (0 == size()) return end();
-
-    auto iter = CacheFriendlyUpperBound(mData.begin(),
-                                        mData.end(),
-                                        aKey,
-                                        comparatorUpperBound<KeyPossibleType, StoredType>);
-
-    if (iter != mData.begin() && (--iter)->first == aKey)
-    {
-      return iterator(reinterpret_cast<ContainedType*>(&(*iter)));
-    }
-    else
-    {
-      return end();
-    }
+    return FindLastContainedType(aKey);
   }
 
-
   template <typename KeyPossibleType>
-  range FindAll(const KeyPossibleType &aKey) const
+  const_iterator FindLast(const KeyPossibleType &aKey) const
+  {
+    return const_cast<const ContainedType*>(FindLastContainedType(aKey));
+  }
+  
+  template <typename KeyPossibleType>
+  range FindAll(const KeyPossibleType &aKey)
   {
     // Empty Optimization
-    if (0 == size()) return range(end(), end());
+    if (0 == size())
+    {
+      return range(end(), end());
+    }
+
+    //return range{ FindFirst(aKey), FindLast(aKey) };
 
     auto iter = CacheFriendlyLowerBound(mData.begin(),
                                         mData.end(),
                                         aKey,
                                         comparatorLowerBound<KeyPossibleType, StoredType>);
-
+    
     if (iter != mData.end() && iter->first == aKey)
     {
       iterator first = iterator(reinterpret_cast<ContainedType*>(&(*iter)));
       iterator last = first;
-
+    
       while (last != end())
       {
         if (last->first == aKey)
@@ -163,7 +181,7 @@ public:
           break;
         }
       }
-
+    
       return range(first, last);
     }
     else

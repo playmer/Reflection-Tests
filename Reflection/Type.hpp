@@ -6,39 +6,6 @@
 #include "Types.hpp"
 #include "Reflection.hpp"
 
-template <typename T>
-inline void GenericDestruct(void* aMemory)
-{
-  (static_cast<T*>(aMemory))->~T();
-}
-
-template <typename T>
-inline void GenericDefaultConstruct(void* aMemory)
-{
-  new (aMemory) T();
-}
-
-template <typename T>
-inline void GenericCopyConstruct(void* aObject, void* aMemory)
-{
-  new (aMemory) T(*static_cast<T*>(aObject));
-}
-
-
-template <>
-inline void GenericDestruct<void>(void* aMemory)
-{
-}
-
-template <>
-inline void GenericDefaultConstruct<void>(void* aMemory)
-{
-}
-
-template <>
-inline void GenericCopyConstruct<void>(void* aObject, void* aMemory)
-{
-}
 
 class Type
 {
@@ -77,6 +44,7 @@ public:
 
   void AddFunction(std::unique_ptr<Function> aFunction);
   void AddProperty(std::unique_ptr<Property> aProperty);
+  void AddField(std::unique_ptr<Field>    aField);
 
   CacheOrderedSet<std::string, std::unique_ptr<Function>>::range GetFunctionRange(const char *aName)
   {
@@ -106,9 +74,25 @@ public:
     return mProperties.FindFirst(name)->second.get();
   }
 
+
+  CacheOrderedSet<std::string, std::unique_ptr<Property>>::range GetFieldRange(const char *aName)
+  {
+    std::string name{ aName };
+
+    return mFields.FindAll(name);
+  }
+
+  Property* GetFirstField(const char *aName)
+  {
+    std::string name{ aName };
+
+    return mFields.FindFirst(name)->second.get();
+  }
+
 private:
   CacheOrderedSet<std::string, std::unique_ptr<Function>> mFunctions;
   CacheOrderedSet<std::string, std::unique_ptr<Property>> mProperties;
+  CacheOrderedSet<std::string, std::unique_ptr<Property>> mFields;
   std::string mName;
   size_t mHash;
   size_t mAllocatedSize;
@@ -121,34 +105,6 @@ private:
 #include "Function.hpp"
 #include "Property.hpp"
 #include "Field.hpp"
-
-//template<>
-//inline Type::Type<void>(const char *aName, void *)
-//  : mName(aName),
-//    mHash(std::hash<std::string>{}(mName)),
-//    mAllocatedSize(0),
-//    mStoredSize(0),
-//    mDefaultConstructor(nullptr),
-//    mCopyConstructor(nullptr),
-//    mDestructor(nullptr)
-//{
-//
-//}
-
-
-
-template<typename T>
-inline auto SizeOf()
-{
-  return sizeof(T);
-}
-
-template<>
-inline auto SizeOf<void>()
-{
-  return 0;
-}
-
 
 
 template <typename T>
@@ -189,6 +145,11 @@ inline void Type::AddFunction(std::unique_ptr<Function> aFunction)
 inline void Type::AddProperty(std::unique_ptr<Property> aProperty)
 {
   mProperties.Emplace(aProperty->GetName(), std::move(aProperty));
+}
+
+inline void Type::AddField(std::unique_ptr<Field> aField)
+{
+  mFields.Emplace(aField->GetName(), std::move(aField));
 }
 
 template<typename T>

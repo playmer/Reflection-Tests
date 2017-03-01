@@ -31,12 +31,75 @@ class Field;
 // The fact that I actually have to do this makes me sick.
 using namespace std::string_literals;
 
-// Helper to call the constructor of a type.
-inline void GenericDoNothing(byte *aMemory)
+template<typename T>
+inline size_t SizeOf()
+{
+  return sizeof(T);
+}
+
+template<>
+inline size_t SizeOf<void>()
+{
+  return 0;
+}
+
+
+template <typename T>
+inline void GenericDestruct(void* aMemory)
+{
+  (static_cast<T*>(aMemory))->~T();
+}
+
+template <typename T>
+inline void GenericDefaultConstruct(void* aMemory)
+{
+  new (aMemory) T();
+}
+
+template <typename T>
+inline void GenericCopyConstruct(void* aObject, void* aMemory)
+{
+  new (aMemory) T(*static_cast<T*>(aObject));
+}
+
+
+template <>
+inline void GenericDestruct<void>(void* aMemory)
+{
+}
+
+template <>
+inline void GenericDefaultConstruct<void>(void* aMemory)
+{
+}
+
+template <>
+inline void GenericCopyConstruct<void>(void* aObject, void* aMemory)
 {
 }
 
 
+template<typename T>
+struct remove_all_pointers : std::conditional_t<std::is_pointer_v<T>, 
+                                                remove_all_pointers<std::remove_pointer_t<T>>,
+                                                std::identity<T>>
+{
+};
+
+template<typename T>
+using remove_all_pointers_t = typename remove_all_pointers<T>::type;
+
+
+
+template <typename Return, typename Arg = Return>
+struct DecomposeFieldPointer {};
+
+template <typename Object, typename Field>
+struct DecomposeFieldPointer<Field Object::*>
+{
+  using ObjectType = Object;
+  using FieldType = Field;
+};
 
 
 template <typename Return, typename Arg = Return>
@@ -69,6 +132,12 @@ inline void runtime_assert(bool aValue, const char *aMessage = "")
     *base = 1;
   }
 }
+
+// Helper to call the constructor of a type.
+inline void GenericDoNothing(byte *aMemory)
+{
+}
+
 
 enum class StringComparison
 {

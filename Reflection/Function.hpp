@@ -127,6 +127,7 @@ template <typename Return, typename... Arguments>
 struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Return>::value == false>::type >
 {
   using FunctionSignature = Return(*)(Arguments...);
+  using CallingType = Any(*)(std::vector<Any>&);
 
   template <FunctionSignature BoundFunc>
   static Any Caller(std::vector<Any>& arguments)
@@ -153,6 +154,7 @@ template <typename Return, typename... Arguments>
 struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Return>::value>::type >
 {
   using FunctionSignature = Return(*)(Arguments...);
+  using CallingType = Any(*)(std::vector<Any>&);
 
   template <FunctionSignature BoundFunc>
   static Any Caller(std::vector<Any>& arguments)
@@ -160,6 +162,18 @@ struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Ret
     size_t i = 0;
     BoundFunc(arguments.at(i++).As<Arguments>()...);
     return Any();
+  }
+
+  template <FunctionSignature BoundFunc>
+  static std::unique_ptr<Function> BindFunction(const char *name, CallingType aCaller)
+  {
+    auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), false);
+    function->AddParameter(TypeId<ObjectType>());
+    ParseArguments<Arguments...>::Parse(function.get());
+
+    function->SetCaller(aCaller);
+
+    return std::move(function);
   }
 
   template <FunctionSignature BoundFunc>
@@ -178,6 +192,7 @@ template <typename Return, typename ObjectType, typename... Arguments>
 struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std::is_void<Return>::value == false>::type>
 {
   using FunctionSignature = Return(ObjectType::*)(Arguments...);
+  using CallingType = Any(*)(std::vector<Any>&);
 
   template <FunctionSignature BoundFunc>
   static Any Caller(std::vector<Any>& arguments)
@@ -190,6 +205,8 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
     return toReturn;
   }
 
+
+
   template <FunctionSignature BoundFunc>
   static std::unique_ptr<Function> BindFunction(const char *name)
   {
@@ -201,6 +218,18 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
 
     return std::move(function);
   }
+
+
+  static std::unique_ptr<Function> BindFunction(const char *name, CallingType aCaller)
+  {
+    auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), false);
+    function->AddParameter(TypeId<ObjectType>());
+    ParseArguments<Arguments...>::Parse(function.get());
+
+    function->SetCaller(aCaller);
+
+    return std::move(function);
+  }
 };
 
 
@@ -208,6 +237,7 @@ template <typename Return, typename ObjectType, typename... Arguments>
 struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std::is_void<Return>::value>::type>
 {
   using FunctionSignature = Return(ObjectType::*)(Arguments...);
+  using CallingType = Any(*)(std::vector<Any>&);
 
   template <FunctionSignature BoundFunc>
   static Any Caller(std::vector<Any>& arguments)
@@ -218,6 +248,18 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
     (self->*BoundFunc)(arguments.at(i++).As<Arguments>()...);
 
     return Any();
+  }
+
+
+  static std::unique_ptr<Function> BindFunction(const char *name, CallingType aCaller)
+  {
+    auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), false);
+    function->AddParameter(TypeId<ObjectType>());
+    ParseArguments<Arguments...>::Parse(function.get());
+
+    function->SetCaller(aCaller);
+
+    return std::move(function);
   }
 
   template <FunctionSignature BoundFunc>

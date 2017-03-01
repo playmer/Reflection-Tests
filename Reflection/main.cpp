@@ -5,10 +5,10 @@ namespace Test
 {
   namespace Test2
   {
-    class UrMum
+    class Animal
     {
     public:
-      DeclareType(UrMum)
+      DeclareType(Animal)
 
       float Print(int)
       {
@@ -35,24 +35,20 @@ namespace Test
 
     };
 
-    DefineType(UrMum);
+    DefineType(Animal);
   }
-
-  class UrSun {};
 }
 
-struct UrKidStruct {};
-
-class UrKidClass
+class Cat
 {
 public:
-  DeclareType(UrKidClass)
+  DeclareType(Cat)
   void Test()
   {
     std::cout << "UrKid" << std::endl;
   }
 };
-DefineType(UrKidClass);
+DefineType(Cat);
 
 template<typename Woo, typename Boy>
 struct TemplatedThing
@@ -62,15 +58,14 @@ struct TemplatedThing
 
 namespace FunctionTests
 {
-  void Func1(UrKidStruct aStruct) {}
-  void Func2(UrKidClass aStruct) {}
+  void Func(Cat aStruct) {}
 }
 
 int main()
 {
-  Type test = Type(static_cast<Test::Test2::UrMum*>(nullptr));
+  Type test = Type(static_cast<Test::Test2::Animal*>(nullptr));
 
-  auto test3 = &Test::Test2::UrMum::x;
+  auto test3 = &Test::Test2::Animal::x;
 
   auto i8test = TypeId<i8>();
   auto i16test = TypeId<i16>();
@@ -83,36 +78,36 @@ int main()
   auto floattest = TypeId<float>();
   auto doubletest = TypeId<double>();
 
-  auto urMum = Test::Test2::UrMum::GetStaticType();
-  auto urKid = UrKidClass::GetStaticType();
+  auto animalType = Test::Test2::Animal::GetStaticType();
+  auto catType = Cat::GetStaticType();
 
-  auto testFunc = BindFunction<decltype(&UrKidClass::Test), &UrKidClass::Test>("Test");
-  urKid->AddFunction(std::move(testFunc));
+  auto testFunc = BindFunction<decltype(&Cat::Test), &Cat::Test>("Test");
+  catType->AddFunction(std::move(testFunc));
 
-  auto func = BindFunction<decltype(&Test::Test2::UrMum::Print),&Test::Test2::UrMum::Print>("Print");
-  auto prop = BindProperty<decltype(&Test::Test2::UrMum::GetX), &Test::Test2::UrMum::GetX,
-                           decltype(&Test::Test2::UrMum::SetX), &Test::Test2::UrMum::SetX>("X");
-  auto field = BindField<decltype(&Test::Test2::UrMum::y), &Test::Test2::UrMum::y>("Y");
+  auto func = BindFunction<decltype(&Test::Test2::Animal::Print),&Test::Test2::Animal::Print>("Print");
+  auto prop = BindProperty<decltype(&Test::Test2::Animal::GetX), &Test::Test2::Animal::GetX,
+                           decltype(&Test::Test2::Animal::SetX), &Test::Test2::Animal::SetX>("X");
+  auto field = BindField<decltype(&Test::Test2::Animal::y), &Test::Test2::Animal::y>("Y");
 
-  urMum->AddFunction(std::move(func));
-  urMum->AddProperty(std::move(prop));
-  urMum->AddField(std::move(field));
-
-
-
-  Test::Test2::UrMum mum;
-  UrKidClass kid;
-
-  std::cout << "Return: " << urMum->GetFirstFunction("Print")->Invoke(&mum, 1).As<float>() << std::endl;
-  auto doesThisWork2 = urKid->GetFirstFunction("Test")->Invoke(&kid);
-
-  auto property = urMum->GetFirstProperty("X");
-  property->GetSetter()->Invoke(&mum, 5);
-  auto i = property->GetGetter()->Invoke(&mum).As<int>();
+  animalType->AddFunction(std::move(func));
+  animalType->AddProperty(std::move(prop));
+  animalType->AddField(std::move(field));
 
 
-  auto fielder = urMum->GetFirstField("Y");
-  fielder->GetSetter()->Invoke(&mum, 12);
-  auto j = fielder->GetGetter()->Invoke(&mum).As<int>();
+
+  Test::Test2::Animal animal;
+  Cat cat;
+
+  std::cout << "Return: " << animalType->GetFirstFunction("Print")->Invoke(&animal, 1).As<float>() << std::endl;
+  auto doesThisWork2 = catType->GetFirstFunction("Test")->Invoke(&cat);
+
+  auto property = animalType->GetFirstProperty("X");
+  property->GetSetter()->Invoke(&animal, 5);
+  auto i = property->GetGetter()->Invoke(&animal).As<int>();
+
+
+  auto fielder = animalType->GetFirstField("Y");
+  fielder->GetSetter()->Invoke(&animal, 12);
+  auto j = fielder->GetGetter()->Invoke(&animal).As<int>();
 
 }

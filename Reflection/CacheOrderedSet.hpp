@@ -320,7 +320,7 @@ protected:
   ///////////////////////////////////////
   // Protected Fields
   ///////////////////////////////////////
-  typename ContainerType mData;
+  ContainerType mData;
 };
 
 #endif

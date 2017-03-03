@@ -65,6 +65,9 @@ int main()
 {
   Type test = Type(static_cast<Test::Test2::Animal*>(nullptr));
 
+
+  auto check = TypeId<Test::Test2::Animal****&>();
+
   auto test3 = &Test::Test2::Animal::x;
 
   auto i8test = TypeId<i8>();

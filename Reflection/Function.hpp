@@ -141,7 +141,7 @@ struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Ret
   template <FunctionSignature BoundFunc>
   static std::unique_ptr<Function> BindFunction(const char *name)
   {
-    auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), true);
+    auto function = std::make_unique<Function>(name, TypeId<Return>(), nullptr, true);
     ParseArguments<Arguments...>::Parse(function.get());
 
     function->SetCaller(Caller<BoundFunc>);
@@ -167,8 +167,7 @@ struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Ret
   template <FunctionSignature BoundFunc>
   static std::unique_ptr<Function> BindFunction(const char *name, CallingType aCaller)
   {
-    auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), false);
-    function->AddParameter(TypeId<ObjectType>());
+    auto function = std::make_unique<Function>(name, TypeId<Return>(), nullptr, false);
     ParseArguments<Arguments...>::Parse(function.get());
 
     function->SetCaller(aCaller);
@@ -179,7 +178,7 @@ struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Ret
   template <FunctionSignature BoundFunc>
   static std::unique_ptr<Function> BindFunction(const char *name)
   {
-    auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), true);
+    auto function = std::make_unique<Function>(name, TypeId<Return>(), nullptr, true);
     ParseArguments<Arguments...>::Parse(function.get());
 
     function->SetCaller(Caller<BoundFunc>);

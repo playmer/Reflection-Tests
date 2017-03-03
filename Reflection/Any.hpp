@@ -8,36 +8,9 @@ class Any
 {
 public:
 
-
-  template <typename... Rest> struct ParseArguments;
-
-  template <>
-  struct ParseArguments<>
-  {
-    inline static void Parse(std::vector<Any> &aArguments)
-    {
-    }
-  };
-
-  template <typename First, typename... Rest>
-  struct ParseArguments<First, Rest...>
-  {
-    inline static void Parse(std::vector<Any> &aArguments, First aFirst, Rest ...aRest)
-    {
-      aArguments.emplace_back(aFirst);
-      ParseArguments<Rest...>::Parse(aArguments, aRest...);
-    }
-  };
-
   template <typename ...Arguments>
-  static std::vector<Any> FromVariadic(Arguments...aArguments)
-  {
-    std::vector<Any> arguments;
-    ParseArguments<Arguments...>::Parse(arguments, aArguments...);
-
-    return arguments;
-  }
-
+  static std::vector<Any> FromVariadic(Arguments...aArguments);
+  
   Any()
   {
     mType = nullptr;
@@ -62,7 +35,7 @@ public:
   template <typename T>
   explicit Any(const T& value)
   {
-    mType = TypeId<remove_all_pointers_t<T>>();
+    mType = TypeId<T>();
     byte* data = AllocateData(sizeof(T));
     new (data) T(value);
   }
@@ -116,7 +89,7 @@ public:
   template <typename T>
   bool IsType()
   {
-    auto type = TypeId<remove_all_pointers_t<T>>();
+    auto type = TypeId<T>();
     auto truth = mType == type;
     return truth;
   }
@@ -132,3 +105,36 @@ public:
   Type* mType;
   byte mData[16];
 };
+
+
+
+
+
+template <typename... Rest> struct ParseAndAddArguments;
+
+template <>
+struct ParseAndAddArguments<>
+{
+  inline static void Parse(std::vector<Any> &aArguments)
+  {
+  }
+};
+
+template <typename First, typename... Rest>
+struct ParseAndAddArguments<First, Rest...>
+{
+  inline static void Parse(std::vector<Any> &aArguments, First aFirst, Rest ...aRest)
+  {
+    aArguments.emplace_back(aFirst);
+    ParseAndAddArguments<Rest...>::Parse(aArguments, aRest...);
+  }
+};
+
+template <typename ...Arguments>
+std::vector<Any> Any::FromVariadic(Arguments...aArguments)
+{
+  std::vector<Any> arguments;
+  ParseAndAddArguments<Arguments...>::Parse(arguments, aArguments...);
+
+  return arguments;
+}

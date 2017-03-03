@@ -15,11 +15,14 @@ public:
   using Destructor = void(*)(void*);
   
   template <typename T>
-  explicit Type(const char *aName, T *);
+  explicit Type(const char *aName, T *aNull);
 
 
   template <typename T>
-  explicit Type(T *);
+  explicit Type(T *aNull);
+
+  template <typename T>
+  explicit Type(Type *aType, bool aReference, T *aNull);
 
   ~Type();
 
@@ -89,6 +92,16 @@ public:
     return mFields.FindFirst(name)->second.get();
   }
 
+  Type* GetPointerTo()
+  {
+    return mPointerTo;
+  }
+
+  Type* GetReferenceTo()
+  {
+    return mPointerTo;
+  }
+
 private:
   CacheOrderedSet<std::string, std::unique_ptr<Function>> mFunctions;
   CacheOrderedSet<std::string, std::unique_ptr<Property>> mProperties;
@@ -100,75 +113,68 @@ private:
   DefaultConstructor mDefaultConstructor;
   CopyConstructor mCopyConstructor;
   Destructor mDestructor;
+
+  Type *mPointerTo;
+  Type *mReferenceTo;
 };
 
-#include "Function.hpp"
-#include "Property.hpp"
-#include "Field.hpp"
-
-
-template <typename T>
-inline Type::Type(const char *aName, T *)
-  : mName(aName),
-    mHash(std::hash<std::string>{}(mName)),
-    mAllocatedSize(SizeOf<T>()),
-    mStoredSize(SizeOf<T>()),
-    mDefaultConstructor(GenericDefaultConstruct<T>),
-    mCopyConstructor(GenericCopyConstruct<T>),
-    mDestructor(GenericDestruct<T>)
+template<typename T>
+struct TypeIdentification
 {
-}
+  static inline Type* TypeId()
+  {
+    return T::GetStaticType();
+  }
+};
 
-
-template <typename T>
-inline Type::Type(T *)
-  : mName(GetTypeName<T>().data()),
-    mHash(std::hash<std::string>{}(mName)),
-    mAllocatedSize(SizeOf<T>()),
-    mStoredSize(SizeOf<T>()),
-    mDefaultConstructor(GenericDefaultConstruct<T>),
-    mCopyConstructor(GenericCopyConstruct<T>),
-    mDestructor(GenericDestruct<T>)
-{
-}
-
-inline Type::~Type()
-{
-
-}
-
-inline void Type::AddFunction(std::unique_ptr<Function> aFunction)
-{
-  mFunctions.Emplace(aFunction->GetName(), std::move(aFunction));
-}
-
-inline void Type::AddProperty(std::unique_ptr<Property> aProperty)
-{
-  mProperties.Emplace(aProperty->GetName(), std::move(aProperty));
-}
-
-inline void Type::AddField(std::unique_ptr<Field> aField)
-{
-  mFields.Emplace(aField->GetName(), std::move(aField));
-}
 
 template<typename T>
-Type* TypeId()
+inline Type* TypeId();
+
+template<typename T>
+struct TypeIdentification<T*>
 {
-  return T::GetStaticType();
+  static inline Type* TypeId()
+  {
+    static Type type = Type{ ::TypeId<T>(), false, static_cast<T*>(nullptr) };
+    
+    return &type;
+  }
+};
+
+template<typename T>
+struct TypeIdentification<T&>
+{
+  static inline Type* TypeId()
+  {
+    static Type type = Type{ ::TypeId<T>(), true, static_cast<T*>(nullptr) };
+
+    return &type;
+  }
+};
+
+
+template<typename T>
+inline Type* TypeId()
+{
+  return TypeIdentification<T>::TypeId();
 }
 
-#define DeclareExternalType(Name) \
-namespace Types                   \
-{                                 \
-  extern Type Name##_Type;        \
-}                                 \
-                                  \
-template <>                       \
-inline Type* TypeId<Name>()       \
-{                                 \
-  return &Types::Name##_Type;     \
-}
+#define DeclareExternalType(Name)   \
+namespace Types                     \
+{                                   \
+  extern Type Name##_Type;          \
+}                                   \
+                                    \
+                                    \
+template<>                          \
+struct TypeIdentification<Name>     \
+{                                   \
+  static inline Type* TypeId()      \
+  {                                 \
+    return &Types::Name##_Type;     \
+  }                                 \
+};
 
 
 #define DefineExternalType(Name) \
@@ -205,3 +211,75 @@ class Base
 {
   virtual Type *GetType() = 0;
 };
+
+
+#include "Function.hpp"
+#include "Property.hpp"
+#include "Field.hpp"
+
+
+template <typename T>
+inline Type::Type(const char *aName, T *)
+  : mName(aName),
+    mHash(std::hash<std::string>{}(mName)),
+    mAllocatedSize(SizeOf<T>()),
+    mStoredSize(SizeOf<T>()),
+    mDefaultConstructor(GenericDefaultConstruct<T>),
+    mCopyConstructor(GenericCopyConstruct<T>),
+    mDestructor(GenericDestruct<T>)
+{
+}
+
+
+template <typename T>
+inline Type::Type(T *)
+  : mName(GetTypeName<T>().data()),
+    mHash(std::hash<std::string>{}(mName)),
+    mAllocatedSize(SizeOf<T>()),
+    mStoredSize(SizeOf<T>()),
+    mDefaultConstructor(GenericDefaultConstruct<T>),
+    mCopyConstructor(GenericCopyConstruct<T>),
+    mDestructor(GenericDestruct<T>)
+{
+}
+
+
+template <typename T>
+inline Type::Type(Type *aType, bool aReference, T *aNull)
+  : mName(GetTypeName<T>().data()),
+    mHash(std::hash<std::string>{}(mName)),
+    mAllocatedSize(SizeOf<T>()),
+    mStoredSize(SizeOf<T>()),
+    mDefaultConstructor(GenericDefaultConstruct<T>),
+    mCopyConstructor(GenericCopyConstruct<T>),
+    mDestructor(GenericDestruct<T>)
+{
+  if (aReference)
+  {
+    mReferenceTo = aType;
+  }
+  else
+  {
+    mPointerTo = aType;
+  }
+}
+
+inline Type::~Type()
+{
+
+}
+
+inline void Type::AddFunction(std::unique_ptr<Function> aFunction)
+{
+  mFunctions.Emplace(aFunction->GetName(), std::move(aFunction));
+}
+
+inline void Type::AddProperty(std::unique_ptr<Property> aProperty)
+{
+  mProperties.Emplace(aProperty->GetName(), std::move(aProperty));
+}
+
+inline void Type::AddField(std::unique_ptr<Field> aField)
+{
+  mFields.Emplace(aField->GetName(), std::move(aField));
+}

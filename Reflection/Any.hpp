@@ -90,7 +90,7 @@ public:
   bool IsType()
   {
     auto type = TypeId<T>();
-    auto truth = mType == type;
+    auto truth = mType == type; // TODO: This will probably not work across dll boundaries.
     return truth;
   }
 

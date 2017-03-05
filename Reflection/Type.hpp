@@ -53,7 +53,7 @@ public:
     return mDocumentation;
   }
 
-  std::string SetDocumentation(const char *aString)
+  void SetDocumentation(const char *aString)
   {
     mDocumentation = aString;
   }
@@ -261,6 +261,8 @@ DeclareExternalType(float)
 DeclareExternalType(double)
 DeclareExternalType(std::string)
 
+// TODO: Probably shouldn't need this. Look into const stuff/why a const i8 doesn't work.
+DeclareExternalType(const char)
 
 
 

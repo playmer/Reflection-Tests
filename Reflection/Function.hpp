@@ -212,7 +212,7 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
   static std::unique_ptr<Function> BindFunction(const char *name)
   {
     auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), false);
-    function->AddParameter(TypeId<ObjectType>());
+    function->AddParameter(TypeId<ObjectType*>());
     ParseArguments<Arguments...>::Parse(function.get());
 
     function->SetCaller(Caller<BoundFunc>);
@@ -224,7 +224,7 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
   static std::unique_ptr<Function> BindFunction(const char *name, CallingType aCaller)
   {
     auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), false);
-    function->AddParameter(TypeId<ObjectType>());
+    function->AddParameter(TypeId<ObjectType*>());
     ParseArguments<Arguments...>::Parse(function.get());
 
     function->SetCaller(aCaller);
@@ -255,7 +255,7 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
   static std::unique_ptr<Function> BindFunction(const char *name, CallingType aCaller)
   {
     auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), false);
-    function->AddParameter(TypeId<ObjectType>());
+    function->AddParameter(TypeId<ObjectType*>());
     ParseArguments<Arguments...>::Parse(function.get());
 
     function->SetCaller(aCaller);
@@ -267,7 +267,7 @@ struct Binding<Return(ObjectType::*)(Arguments...), typename std::enable_if<std:
   static std::unique_ptr<Function> BindFunction(const char *name)
   {
     auto function = std::make_unique<Function>(name, TypeId<Return>(), TypeId<ObjectType>(), false);
-    function->AddParameter(TypeId<ObjectType>());
+    function->AddParameter(TypeId<ObjectType*>());
     ParseArguments<Arguments...>::Parse(function.get());
 
     function->SetCaller(Caller<BoundFunc>);

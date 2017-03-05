@@ -28,6 +28,21 @@ class Function;
 class Property;
 class Field;
 
+
+
+
+inline void runtime_assert(bool aValue, const char *aMessage = "")
+{
+  if (false == aValue)
+  {
+    printf("ASSERT: %s\n", aMessage);
+
+    // Purposely ruining this programs life.
+    int *base = nullptr;
+    *base = 1;
+  }
+}
+
 // The fact that I actually have to do this makes me sick.
 using namespace std::string_literals;
 
@@ -50,16 +65,65 @@ inline void GenericDestruct(void* aMemory)
   (static_cast<T*>(aMemory))->~T();
 }
 
-template <typename T>
-inline void GenericDefaultConstruct(void* aMemory)
+template <typename T, typename Enable = void>
+struct GenericDefaultConstructStruct
 {
-  new (aMemory) T();
+
+};
+
+template <typename T>
+struct GenericDefaultConstructStruct<T, typename std::enable_if<std::is_default_constructible<T>::value == false>::type>
+{
+  static inline void DefaultConstruct(void *aMemory)
+  {
+    runtime_assert(false, "Trying to default construct something without a default constructor.");
+  }
+};
+
+template <typename T>
+struct GenericDefaultConstructStruct<T, typename std::enable_if<std::is_default_constructible<T>::value>::type>
+{
+  static inline void DefaultConstruct(void *aMemory)
+  {
+    new (aMemory) T();
+  }
+};
+
+
+template <typename T, typename Enable = void>
+struct GenericCopyConstructStruct
+{
+
+};
+
+template <typename T>
+struct GenericCopyConstructStruct<T, typename std::enable_if<std::is_copy_constructible<T>::value == false>::type>
+{
+  static inline void CopyConstruct(void *aObject, void *aMemory)
+  {
+    runtime_assert(false, "Trying to copy construct something without a copy constructor.");
+  }
+};
+
+template <typename T>
+struct GenericCopyConstructStruct<T, typename std::enable_if<std::is_copy_constructible<T>::value>::type>
+{
+  static inline void CopyConstruct(void *aObject, void *aMemory)
+  {
+    new (aMemory) T(*static_cast<T*>(aObject));
+  }
+};
+
+template <typename T>
+inline void GenericDefaultConstruct(void *aMemory)
+{
+  GenericDefaultConstructStruct<T>::DefaultConstruct(aMemory);
 }
 
 template <typename T>
 inline void GenericCopyConstruct(void* aObject, void* aMemory)
 {
-  new (aMemory) T(*static_cast<T*>(aObject));
+  GenericCopyConstructStruct<T>::CopyConstruct(aObject, aMemory);
 }
 
 
@@ -119,19 +183,6 @@ struct DecomposeFunctionType<Return(Object::*)(Event*)>
   using ObjectType = Object;
   using EventType = Event;
 };
-
-
-inline void runtime_assert(bool aValue, const char *aMessage = "")
-{
-  if (false == aValue)
-  {
-    printf("ASSERT: %s\n", aMessage);
-
-    // Purposely ruining this programs life.
-    int *base = nullptr;
-    *base = 1;
-  }
-}
 
 // Helper to call the constructor of a type.
 inline void GenericDoNothing(byte *aMemory)

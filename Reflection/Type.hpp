@@ -6,10 +6,66 @@
 #include "Types.hpp"
 #include "Reflection.hpp"
 
+class Type;
 
-class Type
+class Base
+{
+  virtual Type *GetType() = 0;
+};
+
+
+// Used to declare a static type within a class
+// Requires DefineType be used at some point in a
+// translation unit.
+#define DeclareType(Name)                        \
+static Type sType;                               \
+static Type* GetStaticType() { return &sType; }; \
+Type* GetType() { return &sType; };              \
+static void InitializeType();
+
+
+#define DefineType(Name)                              \
+Type Name::sType{#Name, static_cast<Name*>(nullptr)}; \
+void Name::InitializeType()
+
+
+
+class DocumentedObject : public Base
 {
 public:
+  DeclareType(DocumentedObject);
+
+  DocumentedObject()
+    : mDocumentation("")
+  {
+
+  }
+
+
+  DocumentedObject(const char *aDocumentation)
+    : mDocumentation(aDocumentation)
+  {
+
+  }
+
+  std::string GetDocumentation()
+  {
+    return mDocumentation;
+  }
+
+  std::string SetDocumentation(const char *aString)
+  {
+    mDocumentation = aString;
+  }
+private:
+  std::string mDocumentation;
+};
+
+class Type : public DocumentedObject
+{
+public:
+  DeclareType(Type)
+
   using DefaultConstructor = void(*)(void*);
   using CopyConstructor = void(*)(void*, void*);
   using Destructor = void(*)(void*);
@@ -23,6 +79,8 @@ public:
 
   template <typename T>
   explicit Type(Type *aType, bool aReference, T *aNull);
+
+  Type(Type&) = delete;
 
   ~Type();
 
@@ -102,6 +160,11 @@ public:
     return mPointerTo;
   }
 
+  Type* GetBaseType()
+  {
+    return mBaseType;
+  }
+
 private:
   CacheOrderedSet<std::string, std::unique_ptr<Function>> mFunctions;
   CacheOrderedSet<std::string, std::unique_ptr<Property>> mProperties;
@@ -116,6 +179,7 @@ private:
 
   Type *mPointerTo;
   Type *mReferenceTo;
+  Type *mBaseType;
 };
 
 template<typename T>
@@ -131,12 +195,16 @@ struct TypeIdentification
 template<typename T>
 inline Type* TypeId();
 
+
+template<typename T>
+inline void InitializeType();
+
 template<typename T>
 struct TypeIdentification<T*>
 {
   static inline Type* TypeId()
   {
-    static Type type = Type{ ::TypeId<T>(), false, static_cast<T*>(nullptr) };
+    static Type type{ ::TypeId<T>(), false, static_cast<T*>(nullptr) };
     
     return &type;
   }
@@ -147,7 +215,7 @@ struct TypeIdentification<T&>
 {
   static inline Type* TypeId()
   {
-    static Type type = Type{ ::TypeId<T>(), true, static_cast<T*>(nullptr) };
+    static Type type{ ::TypeId<T>(), true, static_cast<T*>(nullptr) };
 
     return &type;
   }
@@ -160,25 +228,25 @@ inline Type* TypeId()
   return TypeIdentification<T>::TypeId();
 }
 
-#define DeclareExternalType(Name)   \
-namespace Types                     \
-{                                   \
-  extern Type Name##_Type;          \
-}                                   \
-                                    \
-                                    \
-template<>                          \
-struct TypeIdentification<Name>     \
-{                                   \
-  static inline Type* TypeId()      \
-  {                                 \
-    return &Types::Name##_Type;     \
-  }                                 \
+template<typename T>
+inline void InitializeType()
+{
+  return TypeInitialization<T>::InitializeType();
+}
+
+#define DeclareExternalType(Name)                           \
+template<>                                                  \
+struct TypeIdentification<Name>                             \
+{                                                           \
+  static inline Type* TypeId()                              \
+  {                                                         \
+    static Type type{ #Name, static_cast<Name*>(nullptr) }; \
+    return &type;                                           \
+  }                                                         \
 };
 
 
-#define DefineExternalType(Name) \
-Type Types::Name##_Type{#Name, static_cast<Name*>(nullptr)};
+#define DefineExternalType(Name)
 
 DeclareExternalType(void)
 DeclareExternalType(i8)
@@ -191,26 +259,9 @@ DeclareExternalType(u32)
 DeclareExternalType(u64)
 DeclareExternalType(float)
 DeclareExternalType(double)
-
-// Used to declare a static type within a class
-// Requires DefineType be used at some point in a
-// translation unit.
-#define DeclareType(Name)     \
-static Type sType;            \
-static Type* GetStaticType(); \
-Type* GetType();
-
-#define DefineType(Name)                                   \
-Type Name::sType{#Name, static_cast<Name*>(nullptr)}; \
-Type* Name::GetStaticType() { return &sType; };            \
-Type* Name::GetType() { return &sType; };
+DeclareExternalType(std::string)
 
 
-
-class Base
-{
-  virtual Type *GetType() = 0;
-};
 
 
 #include "Function.hpp"

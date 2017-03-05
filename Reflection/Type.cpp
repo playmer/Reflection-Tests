@@ -2,6 +2,37 @@
 
 #include "Type.hpp"
 
+DefineType(DocumentedObject)
+{
+  auto documentation = BindProperty<decltype(&DocumentedObject::GetDocumentation),
+                                    &DocumentedObject::GetDocumentation,
+                                    decltype(&DocumentedObject::SetDocumentation), 
+                                    &DocumentedObject::SetDocumentation>("Documentation");
+
+  GetStaticType()->AddProperty(std::move(documentation));
+}
+
+DefineType(Type)
+{
+
+}
+
+DefineType(Function)
+{
+
+}
+
+
+DefineType(Property)
+{
+
+}
+
+
+DefineType(Field)
+{
+
+}
 
 DefineExternalType(void)
 DefineExternalType(i8)
@@ -14,3 +45,4 @@ DefineExternalType(u32)
 DefineExternalType(u64)
 DefineExternalType(float)
 DefineExternalType(double)
+DefineExternalType(std::string)

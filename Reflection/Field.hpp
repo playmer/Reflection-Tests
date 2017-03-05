@@ -5,6 +5,9 @@
 class Field : public Property
 {
 public:
+  DeclareType(Field)
+  Field(Field&) = delete;
+
   Field(const char *aName,
         std::unique_ptr<Function> aGetter, 
         std::unique_ptr<Function> aSetter)

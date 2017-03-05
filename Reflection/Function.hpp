@@ -4,9 +4,11 @@
 
 #include "Any.hpp"
 
-class Function
+class Function : public DocumentedObject
 {
 public:
+  DeclareType(Function)
+  Function(Function&) = delete;
 
   using CallingFunction = Any(*)(std::vector<Any>& arguments);
 
@@ -23,14 +25,14 @@ public:
     std::string mName;
   };
 
-  Function(const char *aName, Type *aReturnType, Type *aOwningType, bool aStatic)
+  Function(const char *aName, Type *aReturnType, Type *aOwningType, bool aStaticOrFree)
     : mName(aName),
       mReturnType(aReturnType),
       mCaller(nullptr),
       mOwningType(aOwningType),
-      mStatic(aStatic)
+      mStaticOrFree(aStaticOrFree)
   {
-    if ((aOwningType == nullptr) && (aStatic == false))
+    if ((aOwningType == nullptr) && (mStaticOrFree == false))
     {
       runtime_assert(false,
         "A function without an owning type is, by definition, static.");
@@ -90,7 +92,7 @@ private:
   Type *mReturnType;
   CallingFunction mCaller;
   Type *mOwningType;
-  bool mStatic;
+  bool mStaticOrFree;
 };
 
 template <typename T>
@@ -167,7 +169,7 @@ struct Binding<Return(*)(Arguments...), typename std::enable_if<std::is_void<Ret
   template <FunctionSignature BoundFunc>
   static std::unique_ptr<Function> BindFunction(const char *name, CallingType aCaller)
   {
-    auto function = std::make_unique<Function>(name, TypeId<Return>(), nullptr, false);
+    auto function = std::make_unique<Function>(name, TypeId<Return>(), nullptr, true);
     ParseArguments<Arguments...>::Parse(function.get());
 
     function->SetCaller(aCaller);

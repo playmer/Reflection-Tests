@@ -59,6 +59,47 @@ private:
   char mData[tConstSize + 1];
 };
 
+struct StringRange
+{
+  constexpr StringRange(const char *aBegin, const char *aEnd)
+    : mBegin(aBegin),
+      mEnd(aBegin)
+  {
+    
+  }
+
+  constexpr StringRange(const char *aBegin)
+    : mBegin(aBegin),
+      mEnd(aBegin + StringLength(aBegin))
+  {
+    
+  }
+
+  bool operator==(const StringRange &aRight) const
+  {
+    if (Size() == aRight.Size())
+    {
+      for (size_t i = 0; i < Size(); ++i)
+      {
+        if (mBegin[i] != aRight.mBegin[i])
+        {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  constexpr size_t Size() const
+  {
+    return mEnd - mBegin;
+  }
+
+  const char *mBegin;
+  const char *mEnd;
+};
+
 
 constexpr size_t GetLastInstanceOfCharacter(const char *aString, size_t aSize, char aCharacter)
 {

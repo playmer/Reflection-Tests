@@ -48,6 +48,44 @@ constexpr auto GetFunctionSignature()
   return test;
 }
 
+constexpr bool IsWhiteSpace(char aCharacter)
+{
+  if ((9 >= aCharacter) && (aCharacter <= 13) || ' ' == aCharacter)
+  {
+    return true;
+  }
+
+  return false;
+}
+
+constexpr StringRange GetTypeNameRange(const char *aStart, size_t aTotalSize)
+{
+  // Find first token of the Type name.
+  auto it = aStart;
+
+  while (IsWhiteSpace(*it))
+  {
+    ++it;
+  }
+
+  constexpr const char *begin = it;
+  constexpr const char *firstKeywordStart = it;
+
+  while((false == IsWhiteSpace(*it)) && (it < (aStart + aTotalSize)))
+  {
+    ++it;
+  }
+
+  constexpr StringRange firstKeyword{ firstKeywordStart, it };
+  constexpr StringRange structName{ "struct" };
+  constexpr StringRange className{ "class" };
+
+  if ((firstKeyword == structName) || (firstKeyword == className))
+  {
+    
+  }
+}
+
 template <typename T>
 constexpr auto GetTypeName()
 {
@@ -63,11 +101,13 @@ constexpr auto GetTypeName()
   ConstexprToken<typeNameLength> token{ typeName + lastSpace + 2 };
 #elif defined(_MSC_VER)
   constexpr size_t firstArrow = GetFirstInstanceOfCharacter(typeName, StringLength(typeName), '<');
-  constexpr size_t endOfKeyword = typeName[firstArrow + 1] == 's' ? 8 : 7;
-  constexpr size_t typeNameLength = totalLength - firstArrow - endOfKeyword - GetTypeEnd();
+  constexpr size_t lastArrow = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '>');
+
+  constexpr size_t typenameTotalRangeSize = lastArrow - firstArrow;
+  constexpr auto typenameRange = GetTypeNameRange(typeName, typenameTotalRangeSize);
 
   // TODO: Remove struct and class keywords from templated output.
-  ConstexprToken<typeNameLength> token{ typeName + firstArrow + endOfKeyword };
+  ConstexprToken<typenameRange.Size()> token{ typenameRange.mBegin};
 #endif
 
   return token;

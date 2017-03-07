@@ -97,14 +97,14 @@ int main()
   Test::Test2::Animal::InitializeType();
   Cat::InitializeType();
 
-  char test = -2;
-
   auto char_Type = TypeId<char>();
-  auto u8_Type = TypeId<u8>();
-  //auto char_Type = TypeId<char>;
-  auto i8_Type = TypeId<i8>();
+  auto u8_Type   = TypeId<u8>();
+  auto i8_Type   = TypeId<i8>();
   auto const_char = TypeId<const char*>();
-
+  (void)char_Type;
+  (void)u8_Type;
+  (void)i8_Type;
+  (void)const_char;
 
   auto animalType = Test::Test2::Animal::GetStaticType();
   auto catType = Cat::GetStaticType();
@@ -124,4 +124,6 @@ int main()
   auto fielder = animalType->GetFirstField("Y");
   fielder->GetSetter()->Invoke(&animal, 12);
   auto j = fielder->GetGetter()->Invoke(&animal).As<int>();
+  (void)j;
+  (void)i;
 }

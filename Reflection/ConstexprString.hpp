@@ -26,25 +26,23 @@ constexpr size_t GetNumberOfTokens(const char *aString)
 template <size_t tConstSize>
 struct ConstexprToken
 {
+public:
   constexpr ConstexprToken()
-    : mData{ '\0' }
   {
   }
 
   constexpr ConstexprToken(const char *aBegin)
-    : mData{ '\0' }
   {
     for (size_t i = 0; i < tConstSize; i++)
     {
       mData[i] = aBegin[i];
     }
 
-    mData[tConstSize] = '\0';
+    mData[tConstSize] = { '\0' };
   }
 
   template<size_t tDifferentSize>
   constexpr ConstexprToken(const ConstexprToken<tDifferentSize> &aToken)
-    : mData{ '0' }
   {
     static_assert(tDifferentSize <= tConstSize, "Trying to copy a ConstexprToken to a ConstexprToken of too small a size.");
     for (size_t i = 0; i < tDifferentSize; i++)
@@ -60,7 +58,6 @@ struct ConstexprToken
   constexpr const char* Data() const { return mData; };
   constexpr const char* data() const { return mData; };
 
-protected:
   char mData[tConstSize + 1];
 };
 
@@ -76,7 +73,7 @@ struct StringRange
 
   constexpr StringRange(const char *aBegin)
     : mBegin(aBegin),
-    mEnd(aBegin + StringLength(aBegin))
+      mEnd(aBegin + StringLength(aBegin))
   {
 
   }
@@ -114,7 +111,7 @@ template<size_t tConstSize>
 struct ConstexprTokenWriter : public ConstexprToken<tConstSize>
 {
   constexpr ConstexprTokenWriter()
-    : mWritingPosition(mData)
+    : mWritingPosition(this->mData)
   {
   }
 
@@ -168,3 +165,4 @@ constexpr size_t GetFirstInstanceOfCharacter(const char *aString, size_t aSize, 
 
   return toReturn;
 }
+

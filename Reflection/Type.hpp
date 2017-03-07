@@ -252,11 +252,11 @@ inline Type* TypeId()
   return TypeIdentification<T>::TypeId();
 }
 
-template<typename T>
-inline void InitializeType()
-{
-  return TypeInitialization<T>::InitializeType();
-}
+//template<typename T>
+//inline void InitializeType()
+//{
+//  return TypeInitialization<T>::InitializeType();
+//}
 
 #define DeclareExternalType(Name)                           \
 template<>                                                  \
@@ -358,6 +358,9 @@ inline Type::Type(Type *aType, Modifier aModifier, T *aNull)
       mPointerTo = aType;
       break;
     }
+    case Modifier::Normal:
+    default:
+      break;
   }
 }
 
@@ -392,6 +395,9 @@ inline Type::Type(Type *aType, Modifier aModifier, T *aNull, bool aFalse)
       mPointerTo = aType;
       break;
     }
+    case Modifier::Normal:
+    default:
+      break;
   }
 }
 

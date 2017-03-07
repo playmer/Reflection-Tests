@@ -111,12 +111,12 @@ constexpr auto GetTypeName()
   constexpr const char* functionName = CONSTEXPR_FUNCTION_SIGNATURE;
 
   // TODO: Should also work for GCC.
-#if defined(__clang__)
-  size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '=');
-  size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 2;
-
-  ConstexprToken<typeNameLength> token{ typeName + lastSpace + 2 };
-#elif defined(_MSC_VER)
+//#if defined(__clang__)
+//  size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '=');
+//  size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 2;
+//
+//  ConstexprToken<typeNameLength> token{ typeName + lastSpace + 2 };
+//#elif defined(_MSC_VER)
   constexpr size_t firstArrow = GetFirstInstanceOfCharacter(functionName, StringLength(functionName), '<') + 1;
   constexpr size_t lastArrow = GetLastInstanceOfCharacter(functionName, StringLength(functionName), '>');
 
@@ -141,7 +141,7 @@ constexpr auto GetTypeName()
 
     totalType.mBegin = token.mEnd;
   }
-#endif
+//#endif
 
   return finalName;
 }

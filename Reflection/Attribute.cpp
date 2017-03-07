@@ -1,3 +1,6 @@
 #include "Attribute.hpp"
 
-DefineType(Attribute);
+DefineType(Attribute)
+{
+  
+}

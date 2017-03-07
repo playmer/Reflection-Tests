@@ -88,6 +88,9 @@ public:
   template <typename T>
   explicit Type(Type *aType, Modifier aModifier, T *aNull);
 
+  template <typename T>
+  explicit Type(Type *aType, Modifier aModifier, T *aNull, bool aFalse);
+
   Type(Type&) = delete;
 
   ~Type();
@@ -213,7 +216,7 @@ struct TypeIdentification<T*>
 {
   static inline Type* TypeId()
   {
-    static Type type{ ::TypeId<T>(), Type::Modifier::Pointer, static_cast<T*>(nullptr) };
+    static Type type{ ::TypeId<T>(), Type::Modifier::Pointer, static_cast<T**>(nullptr) };
     
     return &type;
   }
@@ -224,7 +227,7 @@ struct TypeIdentification<T&>
 {
   static inline Type* TypeId()
   {
-    static Type type{ ::TypeId<T>(), Type::Modifier::Reference, static_cast<T*&>(nullptr) };
+    static Type type{ ::TypeId<T>(), Type::Modifier::Reference, static_cast<T*>(nullptr), false };
 
     return &type;
   }
@@ -333,6 +336,40 @@ inline Type::Type(Type *aType, Modifier aModifier, T *aNull)
     mDefaultConstructor(GenericDefaultConstruct<T>),
     mCopyConstructor(GenericCopyConstruct<T>),
     mDestructor(GenericDestruct<T>),
+    mReferenceTo(nullptr),
+    mPointerTo(nullptr),
+    mConstOf(nullptr),
+    mBaseType(nullptr)
+{
+  switch (aModifier)
+  {
+    case Modifier::Const:
+    {
+      mConstOf = aType;
+      break;
+    }
+    case Modifier::Reference:
+    {
+      mReferenceTo = aType;
+      break;
+    }
+    case Modifier::Pointer:
+    {
+      mPointerTo = aType;
+      break;
+    }
+  }
+}
+
+template <typename T>
+inline Type::Type(Type *aType, Modifier aModifier, T *aNull, bool aFalse)
+  : mName(GetTypeName<T&>().data()),
+    mHash(std::hash<std::string>{}(mName)),
+    mAllocatedSize(SizeOf<T&>()),
+    mStoredSize(SizeOf<T&>()),
+    mDefaultConstructor(GenericDefaultConstruct<T&>),
+    mCopyConstructor(GenericCopyConstruct<T&>),
+    mDestructor(GenericDestruct<T&>),
     mReferenceTo(nullptr),
     mPointerTo(nullptr),
     mConstOf(nullptr),

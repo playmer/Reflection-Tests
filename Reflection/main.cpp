@@ -103,7 +103,7 @@ int main()
   auto u8_Type = TypeId<u8>();
   //auto char_Type = TypeId<char>;
   auto i8_Type = TypeId<i8>();
-  auto const_char = TypeId<const char>();
+  auto const_char = TypeId<const char*>();
 
 
   auto animalType = Test::Test2::Animal::GetStaticType();

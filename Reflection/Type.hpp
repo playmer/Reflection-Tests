@@ -224,7 +224,7 @@ struct TypeIdentification<T&>
 {
   static inline Type* TypeId()
   {
-    static Type type{ ::TypeId<T>(), Type::Modifier::Reference, static_cast<T*>(nullptr) };
+    static Type type{ ::TypeId<T>(), Type::Modifier::Reference, static_cast<T*&>(nullptr) };
 
     return &type;
   }
@@ -236,7 +236,7 @@ struct TypeIdentification<const T>
 {
   static inline Type* TypeId()
   {
-    static Type type{ ::TypeId<T>(), Type::Modifier::Const, static_cast<T*>(nullptr) };
+    static Type type{ ::TypeId<T>(), Type::Modifier::Const, static_cast<const T*>(nullptr) };
 
     return &type;
   }
@@ -281,11 +281,6 @@ DeclareExternalType(u64)
 DeclareExternalType(float)
 DeclareExternalType(double)
 DeclareExternalType(std::string)
-
-// TODO: Probably shouldn't need this. Look into const stuff/why a const i8 doesn't work.
-//DeclareExternalType(char)
-//DeclareExternalType(const char)
-
 
 
 #include "Function.hpp"

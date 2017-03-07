@@ -50,7 +50,7 @@ constexpr auto GetFunctionSignature()
 
 constexpr bool IsWhiteSpace(char aCharacter)
 {
-  if ((9 >= aCharacter) && (aCharacter <= 13) || ' ' == aCharacter)
+  if (((9 >= aCharacter) && (aCharacter <= 13)) || ' ' == aCharacter)
   {
     return true;
   }
@@ -58,60 +58,90 @@ constexpr bool IsWhiteSpace(char aCharacter)
   return false;
 }
 
-constexpr StringRange GetTypeNameRange(const char *aStart, size_t aTotalSize)
+
+constexpr bool IsIdentifier(char aCharacter)
 {
-  // Find first token of the Type name.
-  auto it = aStart;
-
-  while (IsWhiteSpace(*it))
+  if ((('a' <= aCharacter) && (aCharacter <= 'z')) ||
+    (('A' <= aCharacter) && (aCharacter <= 'Z')) ||
+    (('0' <= aCharacter) && (aCharacter <= '9')) ||
+    '_' == aCharacter)
   {
-    ++it;
+    return true;
   }
 
-  constexpr const char *begin = it;
-  constexpr const char *firstKeywordStart = it;
-
-  while((false == IsWhiteSpace(*it)) && (it < (aStart + aTotalSize)))
-  {
-    ++it;
-  }
-
-  constexpr StringRange firstKeyword{ firstKeywordStart, it };
-  constexpr StringRange structName{ "struct" };
-  constexpr StringRange className{ "class" };
-
-  if ((firstKeyword == structName) || (firstKeyword == className))
-  {
-    
-  }
+  return false;
 }
+
+constexpr StringRange GetToken(StringRange aRange)
+{
+  auto i = aRange.mBegin;
+
+  while (!IsWhiteSpace(*i) && IsIdentifier(*i) && i < aRange.mEnd)
+  {
+    ++i;
+  }
+
+  // Gotta check if it's actually not an identifier and continue moving.
+  if (i == aRange.mBegin)
+  {
+    while (!IsWhiteSpace(*i) && !IsIdentifier(*i) && i < aRange.mEnd)
+    {
+      ++i;
+    }
+  }
+
+  // And finally simply check for whitespace.
+  if (i == aRange.mBegin)
+  {
+    while (IsWhiteSpace(*i) && i < aRange.mEnd)
+    {
+      ++i;
+    }
+  }
+
+  aRange.mEnd = i;
+  return aRange;
+}
+
+
 
 template <typename T>
 constexpr auto GetTypeName()
 {
-  constexpr const char* typeName = CONSTEXPR_FUNCTION_SIGNATURE;
-
-  constexpr size_t totalLength = StringLength(typeName);
+  constexpr const char* functionName = CONSTEXPR_FUNCTION_SIGNATURE;
 
   // TODO: Should also work for GCC.
 #if defined(__clang__)
-  constexpr size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '=');
-  constexpr size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 2;
+  size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '=');
+  size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 2;
 
   ConstexprToken<typeNameLength> token{ typeName + lastSpace + 2 };
 #elif defined(_MSC_VER)
-  constexpr size_t firstArrow = GetFirstInstanceOfCharacter(typeName, StringLength(typeName), '<');
-  constexpr size_t lastArrow = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '>');
+  constexpr size_t firstArrow = GetFirstInstanceOfCharacter(functionName, StringLength(functionName), '<') + 1;
+  constexpr size_t lastArrow = GetLastInstanceOfCharacter(functionName, StringLength(functionName), '>');
 
   constexpr size_t typenameTotalRangeSize = lastArrow - firstArrow;
-  constexpr auto typenameRange = GetTypeNameRange(typeName, typenameTotalRangeSize);
 
-  // TODO: Remove struct and class keywords from templated output.
-  ConstexprToken<typenameRange.Size()> token{ typenameRange.mBegin};
+  ConstexprTokenWriter<typenameTotalRangeSize> finalName;
+
+  StringRange totalType{ functionName + firstArrow, functionName + lastArrow };
+
+  while (totalType.mBegin < totalType.mEnd)
+  {
+    auto token = GetToken(totalType);
+
+    if (token == "struct" || token == "class")
+    {
+      ++token.mEnd;
+    }
+    else
+    {
+      finalName.Write(token);
+    }
+
+    totalType.mBegin = token.mEnd;
+  }
 #endif
 
-  return token;
-
-  //ConstexprToken<totalLength> token2{ typeName};
-  //return token2;
+  return finalName;
 }

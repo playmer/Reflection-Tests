@@ -26,6 +26,11 @@ constexpr size_t GetNumberOfTokens(const char *aString)
 template <size_t tConstSize>
 struct ConstexprToken
 {
+  constexpr ConstexprToken()
+    : mData{ '\0' }
+  {
+  }
+
   constexpr ConstexprToken(const char *aBegin)
     : mData{ '\0' }
   {
@@ -55,10 +60,77 @@ struct ConstexprToken
   constexpr const char* Data() const { return mData; };
   constexpr const char* data() const { return mData; };
 
-private:
+protected:
   char mData[tConstSize + 1];
 };
 
+
+struct StringRange
+{
+  constexpr StringRange(const char *aBegin, const char *aEnd)
+    : mBegin(aBegin),
+    mEnd(aEnd)
+  {
+
+  }
+
+  constexpr StringRange(const char *aBegin)
+    : mBegin(aBegin),
+    mEnd(aBegin + StringLength(aBegin))
+  {
+
+  }
+
+  bool operator==(const StringRange &aRight) const
+  {
+    if (Size() == aRight.Size())
+    {
+      for (size_t i = 0; i < Size(); ++i)
+      {
+        if (mBegin[i] != aRight.mBegin[i])
+        {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  constexpr size_t Size() const
+  {
+    return mEnd - mBegin;
+  }
+
+  const char *mBegin;
+  const char *mEnd;
+};
+
+
+
+template<size_t tConstSize>
+struct ConstexprTokenWriter : public ConstexprToken<tConstSize>
+{
+  constexpr ConstexprTokenWriter()
+    : mWritingPosition(mData)
+  {
+  }
+
+
+  constexpr void Write(StringRange aRange)
+  {
+    while (aRange.mBegin < aRange.mEnd)
+    {
+      *mWritingPosition++ = *aRange.mBegin++;
+    }
+  }
+
+
+private:
+  char *mWritingPosition;
+};
 
 constexpr size_t GetLastInstanceOfCharacter(const char *aString, size_t aSize, char aCharacter)
 {

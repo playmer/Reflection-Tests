@@ -69,6 +69,14 @@ public:
   using DefaultConstructor = void(*)(void*);
   using CopyConstructor = void(*)(void*, void*);
   using Destructor = void(*)(void*);
+
+  enum class Modifier
+  {
+    Normal,
+    Reference,
+    Pointer,
+    Const
+  };
   
   template <typename T>
   explicit Type(const char *aName, T *aNull);
@@ -78,7 +86,7 @@ public:
   explicit Type(T *aNull);
 
   template <typename T>
-  explicit Type(Type *aType, bool aReference, T *aNull);
+  explicit Type(Type *aType, Modifier aModifier, T *aNull);
 
   Type(Type&) = delete;
 
@@ -177,8 +185,9 @@ private:
   CopyConstructor mCopyConstructor;
   Destructor mDestructor;
 
-  Type *mPointerTo;
   Type *mReferenceTo;
+  Type *mPointerTo;
+  Type *mConstOf;
   Type *mBaseType;
 };
 
@@ -204,7 +213,7 @@ struct TypeIdentification<T*>
 {
   static inline Type* TypeId()
   {
-    static Type type{ ::TypeId<T>(), false, static_cast<T*>(nullptr) };
+    static Type type{ ::TypeId<T>(), Type::Modifier::Pointer, static_cast<T*>(nullptr) };
     
     return &type;
   }
@@ -215,7 +224,19 @@ struct TypeIdentification<T&>
 {
   static inline Type* TypeId()
   {
-    static Type type{ ::TypeId<T>(), true, static_cast<T*>(nullptr) };
+    static Type type{ ::TypeId<T>(), Type::Modifier::Reference, static_cast<T*&>(nullptr) };
+
+    return &type;
+  }
+};
+
+
+template<typename T>
+struct TypeIdentification<const T>
+{
+  static inline Type* TypeId()
+  {
+    static Type type{ ::TypeId<T>(), Type::Modifier::Const, static_cast<const T*>(nullptr) };
 
     return &type;
   }
@@ -261,10 +282,6 @@ DeclareExternalType(float)
 DeclareExternalType(double)
 DeclareExternalType(std::string)
 
-// TODO: Probably shouldn't need this. Look into const stuff/why a const i8 doesn't work.
-DeclareExternalType(const char)
-
-
 
 #include "Function.hpp"
 #include "Property.hpp"
@@ -279,7 +296,11 @@ inline Type::Type(const char *aName, T *)
     mStoredSize(SizeOf<T>()),
     mDefaultConstructor(GenericDefaultConstruct<T>),
     mCopyConstructor(GenericCopyConstruct<T>),
-    mDestructor(GenericDestruct<T>)
+    mDestructor(GenericDestruct<T>),
+    mReferenceTo(nullptr),
+    mPointerTo(nullptr),
+    mConstOf(nullptr),
+    mBaseType(nullptr)
 {
 }
 
@@ -292,28 +313,48 @@ inline Type::Type(T *)
     mStoredSize(SizeOf<T>()),
     mDefaultConstructor(GenericDefaultConstruct<T>),
     mCopyConstructor(GenericCopyConstruct<T>),
-    mDestructor(GenericDestruct<T>)
+    mDestructor(GenericDestruct<T>),
+    mReferenceTo(nullptr),
+    mPointerTo(nullptr),
+    mConstOf(nullptr),
+    mBaseType(nullptr)
 {
 }
 
 
+
+
 template <typename T>
-inline Type::Type(Type *aType, bool aReference, T *aNull)
+inline Type::Type(Type *aType, Modifier aModifier, T *aNull)
   : mName(GetTypeName<T>().data()),
     mHash(std::hash<std::string>{}(mName)),
     mAllocatedSize(SizeOf<T>()),
     mStoredSize(SizeOf<T>()),
     mDefaultConstructor(GenericDefaultConstruct<T>),
     mCopyConstructor(GenericCopyConstruct<T>),
-    mDestructor(GenericDestruct<T>)
+    mDestructor(GenericDestruct<T>),
+    mReferenceTo(nullptr),
+    mPointerTo(nullptr),
+    mConstOf(nullptr),
+    mBaseType(nullptr)
 {
-  if (aReference)
+  switch (aModifier)
   {
-    mReferenceTo = aType;
-  }
-  else
-  {
-    mPointerTo = aType;
+    case Modifier::Const:
+    {
+      mConstOf = aType;
+      break;
+    }
+    case Modifier::Reference:
+    {
+      mReferenceTo = aType;
+      break;
+    }
+    case Modifier::Pointer:
+    {
+      mPointerTo = aType;
+      break;
+    }
   }
 }
 

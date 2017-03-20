@@ -37,13 +37,13 @@ inline void runtime_assert(bool aValue, const char *aMessage = "")
   {
     printf("ASSERT: %s\n", aMessage);
 
-    // Purposely ruining this programs life.
+    // Intentionally crashing the program.
     int *base = nullptr;
     *base = 1;
   }
 }
 
-// The fact that I actually have to do this makes me sick.
+// We want to be able to use the string literals, this is the only way.
 using namespace std::string_literals;
 
 template<typename T>

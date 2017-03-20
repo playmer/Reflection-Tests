@@ -14,18 +14,37 @@ class Base
 };
 
 
+
+template <typename T>
+typename T::SelfType GetSelfType(typename T::SelfType*) {}
+
+template <typename T>
+void GetSelfType(...) {}
+
+
+template <typename T>
+T GetDummy(void (T::*)());
+
+
+
 // Used to declare a static type within a class
 // Requires DefineType be used at some point in a
 // translation unit.
-#define DeclareType(Name)                        \
-static Type sType;                               \
-static Type* GetStaticType() { return &sType; }; \
-Type* GetType() { return &sType; };              \
+#define DeclareType(Name)                                      \
+void Dummy() {}                                                \
+typedef decltype(GetDummy(&Dummy)) TempSelfType;               \
+typedef decltype(GetSelfType<TempSelfType>(nullptr)) BaseType; \
+typedef TempSelfType SelfType;                                 \
+static Type sType;                                             \
+static Type* GetStaticType() { return &sType; };               \
+Type* GetType() { return &sType; };                            \
 static void InitializeType();
 
 
-#define DefineType(Name)                              \
-Type Name::sType{#Name, static_cast<Name*>(nullptr)}; \
+#define DefineType(Name)                                 \
+Type Name::sType{#Name,                                  \
+                 static_cast<Name*>(nullptr),            \
+                 static_cast<Name::BaseType*>(nullptr)}; \
 void Name::InitializeType()
 
 
@@ -77,13 +96,16 @@ public:
     Pointer,
     Const
   };
-  
-  template <typename T>
-  explicit Type(const char *aName, T *aNull);
+
+  template <typename tType>
+  explicit Type(const char *aName, tType *aNull);
+
+  template <typename tDerived, typename tBase>
+  explicit Type(const char *aName, tDerived *aDerivedNull, tBase *aBaseNull);
 
 
-  template <typename T>
-  explicit Type(T *aNull);
+  template <typename tDerived, typename tBase>
+  explicit Type(tDerived *aDerivedNull, tBase *aBaseNull);
 
   template <typename T>
   explicit Type(Type *aType, Modifier aModifier, T *aNull);
@@ -258,15 +280,16 @@ inline Type* TypeId()
 //  return TypeInitialization<T>::InitializeType();
 //}
 
-#define DeclareExternalType(Name)                           \
-template<>                                                  \
-struct TypeIdentification<Name>                             \
-{                                                           \
-  static inline Type* TypeId()                              \
-  {                                                         \
-    static Type type{ #Name, static_cast<Name*>(nullptr) }; \
-    return &type;                                           \
-  }                                                         \
+#define DeclareExternalType(Name)                    \
+template<>                                           \
+struct TypeIdentification<Name>                      \
+{                                                    \
+  static inline Type* TypeId()                       \
+  {                                                  \
+    static Type type{ #Name,                         \
+                      static_cast<Name*>(nullptr) }; \
+    return &type;                                    \
+  }                                                  \
 };
 
 
@@ -291,36 +314,52 @@ DeclareExternalType(std::string)
 #include "Field.hpp"
 
 
-template <typename T>
-inline Type::Type(const char *aName, T *)
+template <typename tDerived, typename tBase>
+inline Type::Type(const char *aName, tDerived *, tBase *)
   : mName(aName),
     mHash(std::hash<std::string>{}(mName)),
-    mAllocatedSize(SizeOf<T>()),
-    mStoredSize(SizeOf<T>()),
-    mDefaultConstructor(GenericDefaultConstruct<T>),
-    mCopyConstructor(GenericCopyConstruct<T>),
-    mDestructor(GenericDestruct<T>),
+    mAllocatedSize(SizeOf<tDerived>()),
+    mStoredSize(SizeOf<tDerived>()),
+    mDefaultConstructor(GenericDefaultConstruct<tDerived>),
+    mCopyConstructor(GenericCopyConstruct<tDerived>),
+    mDestructor(GenericDestruct<tDerived>),
     mReferenceTo(nullptr),
     mPointerTo(nullptr),
     mConstOf(nullptr),
-    mBaseType(nullptr)
+    mBaseType(TypeId<tBase>())
+{
+}
+
+template <typename tType>
+inline Type::Type(const char *aName, tType *)
+  : mName(aName),
+  mHash(std::hash<std::string>{}(mName)),
+  mAllocatedSize(SizeOf<tType>()),
+  mStoredSize(SizeOf<tType>()),
+  mDefaultConstructor(GenericDefaultConstruct<tType>),
+  mCopyConstructor(GenericCopyConstruct<tType>),
+  mDestructor(GenericDestruct<tType>),
+  mReferenceTo(nullptr),
+  mPointerTo(nullptr),
+  mConstOf(nullptr),
+  mBaseType(nullptr)
 {
 }
 
 
-template <typename T>
-inline Type::Type(T *)
-  : mName(GetTypeName<T>().data()),
+template <typename tDerived, typename tBase>
+inline Type::Type(tDerived *, tBase *)
+  : mName(GetTypeName<tDerived>().data()),
     mHash(std::hash<std::string>{}(mName)),
-    mAllocatedSize(SizeOf<T>()),
-    mStoredSize(SizeOf<T>()),
-    mDefaultConstructor(GenericDefaultConstruct<T>),
-    mCopyConstructor(GenericCopyConstruct<T>),
-    mDestructor(GenericDestruct<T>),
+    mAllocatedSize(SizeOf<tDerived>()),
+    mStoredSize(SizeOf<tDerived>()),
+    mDefaultConstructor(GenericDefaultConstruct<tDerived>),
+    mCopyConstructor(GenericCopyConstruct<tDerived>),
+    mDestructor(GenericDestruct<tDerived>),
     mReferenceTo(nullptr),
     mPointerTo(nullptr),
-    mConstOf(nullptr),
-    mBaseType(nullptr)
+    mConstOf(nullptr), 
+    mBaseType(TypeId<tBase>())
 {
 }
 

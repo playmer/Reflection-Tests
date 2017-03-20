@@ -32,7 +32,6 @@ namespace Test
       int y = 1;
       int z = 2;
       int w = 3;
-
     };
 
     DefineType(Animal)
@@ -61,7 +60,7 @@ namespace Test
   }
 }
 
-class Cat
+class Cat : public Test::Test2::Animal
 {
 public:
   DeclareType(Cat)

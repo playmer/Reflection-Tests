@@ -62,9 +62,9 @@ constexpr bool IsWhiteSpace(char aCharacter)
 constexpr bool IsIdentifier(char aCharacter)
 {
   if ((('a' <= aCharacter) && (aCharacter <= 'z')) ||
-    (('A' <= aCharacter) && (aCharacter <= 'Z')) ||
-    (('0' <= aCharacter) && (aCharacter <= '9')) ||
-    '_' == aCharacter)
+      (('A' <= aCharacter) && (aCharacter <= 'Z')) ||
+      (('0' <= aCharacter) && (aCharacter <= '9')) ||
+      '_' == aCharacter)
   {
     return true;
   }

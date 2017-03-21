@@ -6,13 +6,18 @@
 #ifndef Types_hpp
 #define Types_hpp
 
-#include <stdint.h>
+#include <cstdint>
 
 #include <memory>
 #include <string>
 #include <unordered_map>
 
 using byte = std::uint8_t;
+
+using s8 = signed char;
+using s16 = signed short;
+using s32 = signed int;
+using s64 = signed long long;
 
 using i8 =  char;
 using i16 = std::int16_t;
@@ -27,9 +32,6 @@ using u64 = std::uint64_t;
 class Function;
 class Property;
 class Field;
-
-
-
 
 inline void runtime_assert(bool aValue, const char *aMessage = "")
 {
@@ -142,11 +144,17 @@ inline void GenericCopyConstruct<void>(void* aObject, void* aMemory)
 {
 }
 
+template <typename T>
+struct Identity
+{
+  T operator()(T x) const { return x; }
+};
+
 
 template<typename T>
 struct remove_all_pointers : std::conditional_t<std::is_pointer_v<T>, 
                                                 remove_all_pointers<std::remove_pointer_t<T>>,
-                                                std::identity<T>>
+                                                Identity<T>>
 {
 };
 
@@ -217,11 +225,13 @@ inline StringComparison StringCompare(const char *aLeft, const char *aRight)
   {
     return StringComparison::Equal;
   }
-  else if (comparison < 0)
+
+  if (comparison < 0)
   {
     return StringComparison::LesserInString1;
   }
-  else // if (comparison < 0) This is by definition of the domain, no need to check
+
+  // else if (comparison < 0) This is by definition of the domain, no need to check
   {
     return StringComparison::GreaterInString1;
   }

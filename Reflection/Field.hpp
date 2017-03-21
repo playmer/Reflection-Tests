@@ -43,8 +43,8 @@ static std::unique_ptr<Field> BindField(const char *aName)
 {
   using ObjectType = typename DecomposeFieldPointer<FieldPointerType>::ObjectType;
   using FieldType = typename DecomposeFieldPointer<FieldPointerType>::FieldType;
-  auto getter = Binding<FieldType (ObjectType::*)()>::BindFunction("Getter", Field::Getter<FieldPointerType, aFieldPointer>);
-  auto setter = Binding<void(ObjectType::*)(FieldType)>::BindFunction("Setter", Field::Setter<FieldPointerType, aFieldPointer>);
+  auto getter = Binding<FieldType (ObjectType::*)()>::BindPassedFunction("Getter", Field::Getter<FieldPointerType, aFieldPointer>);
+  auto setter = Binding<void(ObjectType::*)(FieldType)>::BindPassedFunction("Setter", Field::Setter<FieldPointerType, aFieldPointer>);
   return std::make_unique <Field> (aName, std::move(getter), std::move(setter));
 }
 

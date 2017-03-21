@@ -2,7 +2,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "CacheOrderedSet.hpp"
+#include "CacheOrderedMultiMap.hpp"
 #include "Types.hpp"
 #include "Reflection.hpp"
 
@@ -32,7 +32,7 @@ T GetDummy(void (T::*)());
 // translation unit.
 #define DeclareType(Name)                                      \
 void Dummy() {}                                                \
-typedef decltype(GetDummy(&Dummy)) TempSelfType;               \
+typedef decltype(GetDummy(&Name::Dummy)) TempSelfType;         \
 typedef decltype(GetSelfType<TempSelfType>(nullptr)) BaseType; \
 typedef TempSelfType SelfType;                                 \
 static Type sType;                                             \
@@ -140,7 +140,7 @@ public:
   void AddProperty(std::unique_ptr<Property> aProperty);
   void AddField(std::unique_ptr<Field>    aField);
 
-  CacheOrderedSet<std::string, std::unique_ptr<Function>>::range GetFunctionRange(const char *aName)
+  CacheOrderedMultiMap<std::string, std::unique_ptr<Function>>::range GetFunctionRange(const char *aName)
   {
     std::string name{ aName };
   
@@ -154,7 +154,7 @@ public:
     return mFunctions.FindFirst(name)->second.get();
   }
 
-  CacheOrderedSet<std::string, std::unique_ptr<Property>>::range GetPropertyRange(const char *aName)
+  CacheOrderedMultiMap<std::string, std::unique_ptr<Property>>::range GetPropertyRange(const char *aName)
   {
     std::string name{ aName };
 
@@ -169,7 +169,7 @@ public:
   }
 
 
-  CacheOrderedSet<std::string, std::unique_ptr<Property>>::range GetFieldRange(const char *aName)
+  CacheOrderedMultiMap<std::string, std::unique_ptr<Property>>::range GetFieldRange(const char *aName)
   {
     std::string name{ aName };
 
@@ -199,9 +199,9 @@ public:
   }
 
 private:
-  CacheOrderedSet<std::string, std::unique_ptr<Function>> mFunctions;
-  CacheOrderedSet<std::string, std::unique_ptr<Property>> mProperties;
-  CacheOrderedSet<std::string, std::unique_ptr<Property>> mFields;
+  CacheOrderedMultiMap<std::string, std::unique_ptr<Function>> mFunctions;
+  CacheOrderedMultiMap<std::string, std::unique_ptr<Property>> mProperties;
+  CacheOrderedMultiMap<std::string, std::unique_ptr<Property>> mFields;
   std::string mName;
   size_t mHash;
   size_t mAllocatedSize;
@@ -296,6 +296,7 @@ struct TypeIdentification<Name>                      \
 #define DefineExternalType(Name)
 
 DeclareExternalType(void)
+DeclareExternalType(s8)
 DeclareExternalType(i8)
 DeclareExternalType(i16)
 DeclareExternalType(i32)

@@ -16,7 +16,7 @@
 // Class
 ///////////////////////////////////////
 template <typename KeyType, typename StoredType>
-class CacheOrderedSet
+class CacheOrderedMultiMap
 {
 public:
   using InternalContainedType = typename std::pair<KeyType, StoredType>;
@@ -25,11 +25,11 @@ public:
   using size_type = typename ContainerType::size_type;
 
 
-  using iterator = ::iterator<ContainedType>;
-  using const_iterator = ::const_iterator<ContainedType>;
+  using iterator = RandomAccessIterator<ContainedType>;
+  using const_iterator = ConstRandomAccessIterator<ContainedType>;
 
-  using counting_iterator = CountingIterator<::iterator<ContainedType>>;
-  using const_counting_iterator = CountingIterator<::iterator<const ContainedType>>;
+  using counting_iterator = CountingIterator<RandomAccessIterator<ContainedType>>;
+  using const_counting_iterator = CountingIterator<RandomAccessIterator<const ContainedType>>;
 
   using range = Range<iterator>;
   using const_range = Range<const_iterator>;
@@ -51,21 +51,21 @@ public:
     if (mData.size() == 0)
     {
       auto emplacedData = mData.emplace(mData.begin(),
-                                        std::forward<const KeyPossibleType &>(aKey),
-                                        std::forward<Arguments &&>(aStoredTypeArguments)...);
+        std::forward<const KeyPossibleType &>(aKey),
+        std::forward<Arguments &&>(aStoredTypeArguments)...);
 
 
       return iterator(reinterpret_cast<ContainedType*>(&(*emplacedData)));
     }
 
     auto iter = CacheFriendlyUpperBound(mData.begin(),
-                                        mData.end(),
-                                        aKey,
-                                        comparatorUpperBound<KeyPossibleType, StoredType>);
+      mData.end(),
+      aKey,
+      comparatorUpperBound<KeyPossibleType, StoredType>);
 
     auto emplacedData = mData.emplace(iter,
-                                      std::forward<const KeyPossibleType &>(aKey),
-                                      std::forward<Arguments &&>(aStoredTypeArguments)...);
+      std::forward<const KeyPossibleType &>(aKey),
+      std::forward<Arguments &&>(aStoredTypeArguments)...);
 
     return iterator(reinterpret_cast<ContainedType*>(&(*emplacedData)));
   }
@@ -84,9 +84,9 @@ private:
     }
 
     auto iter = CacheFriendlyLowerBound(mData.begin(),
-                                        mData.end(),
-                                        aKey,
-                                        comparatorLowerBound<KeyPossibleType, StoredType>);
+      mData.end(),
+      aKey,
+      comparatorLowerBound<KeyPossibleType, StoredType>);
 
     if (iter != mData.end() && iter->first == aKey)
     {
@@ -98,7 +98,7 @@ private:
     }
   }
 
-  
+
   template <typename KeyPossibleType>
   ContainedType* FindLastContainedType(const KeyPossibleType &aKey)
   {
@@ -109,9 +109,9 @@ private:
     }
 
     auto iter = CacheFriendlyUpperBound(mData.begin(),
-                                        mData.end(),
-                                        aKey,
-                                        comparatorUpperBound<KeyPossibleType, StoredType>);
+      mData.end(),
+      aKey,
+      comparatorUpperBound<KeyPossibleType, StoredType>);
 
     if (iter != mData.begin() && (--iter)->first == aKey)
     {
@@ -148,7 +148,7 @@ public:
   {
     return const_cast<const ContainedType*>(FindLastContainedType(aKey));
   }
-  
+
   template <typename KeyPossibleType>
   range FindAll(const KeyPossibleType &aKey)
   {
@@ -159,15 +159,15 @@ public:
     }
 
     auto iter = CacheFriendlyLowerBound(mData.begin(),
-                                        mData.end(),
-                                        aKey,
-                                        comparatorLowerBound<KeyPossibleType, StoredType>);
-    
+      mData.end(),
+      aKey,
+      comparatorLowerBound<KeyPossibleType, StoredType>);
+
     if (iter != mData.end() && iter->first == aKey)
     {
       iterator first = iterator(reinterpret_cast<ContainedType*>(&(*iter)));
       iterator last = first;
-    
+
       while (last != end())
       {
         if (last->first == aKey)
@@ -179,7 +179,7 @@ public:
           break;
         }
       }
-    
+
       return range(first, last);
     }
     else

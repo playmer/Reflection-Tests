@@ -39,23 +39,23 @@ namespace Test
       auto print = BindFunction<decltype(&Test::Test2::Animal::Print), &Test::Test2::Animal::Print>("Print");
       auto xProp = BindProperty<decltype(&Test::Test2::Animal::GetX), &Test::Test2::Animal::GetX,
                                 decltype(&Test::Test2::Animal::SetX), &Test::Test2::Animal::SetX>("X");
-
+      
       GetStaticType()->AddFunction(std::move(print));
       GetStaticType()->AddProperty(std::move(xProp));
-
+      
       auto x = BindField<decltype(&Test::Test2::Animal::x), 
                                   &Test::Test2::Animal::x>("X");
-      auto y = BindField<decltype(&Test::Test2::Animal::y), 
-                                  &Test::Test2::Animal::y>("Y");
-      auto z = BindField<decltype(&Test::Test2::Animal::z), 
-                                  &Test::Test2::Animal::z>("Z");
-      auto w = BindField<decltype(&Test::Test2::Animal::w), 
-                                  &Test::Test2::Animal::w>("W");
-
+      //auto y = BindField<decltype(&Test::Test2::Animal::y), 
+      //                            &Test::Test2::Animal::y>("Y");
+      //auto z = BindField<decltype(&Test::Test2::Animal::z), 
+      //                            &Test::Test2::Animal::z>("Z");
+      //auto w = BindField<decltype(&Test::Test2::Animal::w), 
+      //                            &Test::Test2::Animal::w>("W");
+      
       GetStaticType()->AddField(std::move(x));
-      GetStaticType()->AddField(std::move(y));
-      GetStaticType()->AddField(std::move(z));
-      GetStaticType()->AddField(std::move(w));
+      //GetStaticType()->AddField(std::move(y));
+      //GetStaticType()->AddField(std::move(z));
+      //GetStaticType()->AddField(std::move(w));
     }
   }
 }
@@ -104,22 +104,22 @@ int main()
   (void)u8_Type;
   (void)i8_Type;
   (void)const_char;
-
+  
   auto animalType = Test::Test2::Animal::GetStaticType();
   auto catType = Cat::GetStaticType();
-
-
+  
+  
   Test::Test2::Animal animal;
   Cat cat;
-
+  
   std::cout << "Return: " << animalType->GetFirstFunction("Print")->Invoke(&animal, 1).As<float>() << std::endl;
   auto doesThisWork2 = catType->GetFirstFunction("Print")->Invoke(&cat);
-
+  
   auto property = animalType->GetFirstProperty("X");
   property->GetSetter()->Invoke(&animal, 5);
   auto i = property->GetGetter()->Invoke(&animal).As<int>();
-
-
+  
+  
   auto fielder = animalType->GetFirstField("Y");
   fielder->GetSetter()->Invoke(&animal, 12);
   auto j = fielder->GetGetter()->Invoke(&animal).As<int>();

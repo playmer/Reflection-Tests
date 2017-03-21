@@ -4,10 +4,10 @@
 
 
 template <typename TemplateType>
-class const_iterator;
+class ConstRandomAccessIterator;
 
 template <typename TemplateType>
-class iterator : public std::iterator<std::random_access_iterator_tag, TemplateType>
+class RandomAccessIterator : public std::iterator<std::random_access_iterator_tag, TemplateType>
 {
 public:
   using pointer = TemplateType*;
@@ -15,45 +15,45 @@ public:
   using value_type = TemplateType;
   using size_type = size_t;
 
-  inline iterator(pointer aPointer = nullptr)
+  inline RandomAccessIterator(pointer aPointer = nullptr)
     : mCurrent(aPointer)
   {
 
   }
 
-  inline iterator(const iterator &aIterator)
+  inline RandomAccessIterator(const RandomAccessIterator &aIterator)
     : mCurrent(aIterator.mCurrent)
   {
 
   }
 
-  inline iterator& operator=(const iterator &aIterator)
+  inline RandomAccessIterator& operator=(const RandomAccessIterator &aIterator)
   {
     mCurrent = aIterator.mCurrent;
     return *this;
   }
 
-  inline iterator& operator++()
+  inline RandomAccessIterator& operator++()
   {
     ++mCurrent;
     return *this;
   }
 
-  inline iterator operator++(int)
+  inline RandomAccessIterator operator++(int)
   {
-    iterator previousIter{ *this };
+    RandomAccessIterator previousIter{ *this };
     ++mCurrent;
     return previousIter;
   }
 
-  operator const_iterator<TemplateType>();
+  operator ConstRandomAccessIterator<TemplateType>();
 
-  inline bool operator==(const iterator &aIterator)
+  inline bool operator==(const RandomAccessIterator &aIterator)
   {
     return mCurrent == aIterator.mCurrent;
   }
 
-  inline bool operator!=(const iterator &aIterator)
+  inline bool operator!=(const RandomAccessIterator &aIterator)
   {
     return mCurrent != aIterator.mCurrent;
   }
@@ -73,7 +73,7 @@ private:
 };
 
 template <typename TemplateType>
-class const_iterator : public std::iterator<std::random_access_iterator_tag, const TemplateType>
+class ConstRandomAccessIterator : public std::iterator<std::random_access_iterator_tag, const TemplateType>
 {
 public:
   using pointer = const TemplateType*;
@@ -81,45 +81,45 @@ public:
   using value_type = const TemplateType;
   using size_type = size_t;
 
-  friend class iterator<TemplateType>;
+  friend class RandomAccessIterator<TemplateType>;
 
-  inline const_iterator(pointer aPointer = nullptr)
+  inline ConstRandomAccessIterator(pointer aPointer = nullptr)
     : mCurrent(aPointer)
   {
 
   }
 
-  inline const_iterator(const const_iterator &aIterator)
+  inline ConstRandomAccessIterator(const ConstRandomAccessIterator &aIterator)
     : mCurrent(aIterator.mCurrent)
   {
 
   }
 
-  inline const_iterator& operator=(const const_iterator &aIterator)
+  inline ConstRandomAccessIterator& operator=(const ConstRandomAccessIterator &aIterator)
   {
     mCurrent = aIterator.mCurrent;
     return *this;
   }
 
-  inline const_iterator& operator++()
+  inline ConstRandomAccessIterator& operator++()
   {
     ++mCurrent;
     return *this;
   }
 
-  inline const_iterator operator++(int)
+  inline ConstRandomAccessIterator operator++(int)
   {
-    const_iterator previousIter{ *this };
+    ConstRandomAccessIterator previousIter{ *this };
     ++mCurrent;
     return previousIter;
   }
 
-  inline bool operator==(const const_iterator &aIterator)
+  inline bool operator==(const ConstRandomAccessIterator &aIterator)
   {
     return mCurrent == aIterator.mCurrent;
   }
 
-  inline bool operator!=(const const_iterator &aIterator)
+  inline bool operator!=(const ConstRandomAccessIterator &aIterator)
   {
     return mCurrent != aIterator.mCurrent;
   }
@@ -139,9 +139,9 @@ private:
 };
 
 template<typename TemplateType>
-iterator<TemplateType>::operator const_iterator<TemplateType>()
+RandomAccessIterator<TemplateType>::operator ConstRandomAccessIterator<TemplateType>()
 {
-  const_iterator<TemplateType> it;
+  ConstRandomAccessIterator<TemplateType> it;
   it.mCurrent = mCurrent;
 
   return it;

@@ -129,13 +129,15 @@
     <ClInclude Include="CacheOrderedMultiMap.hpp" />
     <ClInclude Include="ConstexprString.hpp" />
     <ClInclude Include="Field.hpp" />
+    <ClInclude Include="ForwardDeclarations.hpp" />
     <ClInclude Include="Function.hpp" />
     <ClInclude Include="Iterator.hpp" />
     <ClInclude Include="Property.hpp" />
     <ClInclude Include="Range.hpp" />
     <ClInclude Include="Reflection.hpp" />
     <ClInclude Include="Type.hpp" />
-    <ClInclude Include="Types.hpp" />
+    <ClInclude Include="Utilities.hpp" />
+    <ClInclude Include="TypeTraits.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Attribute.cpp" />

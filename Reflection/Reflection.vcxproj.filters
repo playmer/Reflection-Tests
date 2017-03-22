@@ -18,9 +18,6 @@
     <ClInclude Include="Reflection.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Types.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Any.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -52,6 +49,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CacheOrderedMultiMap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeTraits.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardDeclarations.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

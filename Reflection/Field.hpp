@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Property.hpp"
+#include "TypeTraits.hpp"
 
 class Field : public Property
 {

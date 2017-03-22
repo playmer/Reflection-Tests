@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Types.hpp"
+#include "ForwardDeclarations.hpp"
+#include "Utilities.hpp"
 #include "Type.hpp"
 
 

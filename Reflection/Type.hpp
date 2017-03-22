@@ -3,7 +3,8 @@
 #include <vector>
 
 #include "CacheOrderedMultiMap.hpp"
-#include "Types.hpp"
+#include "ForwardDeclarations.hpp"
+#include "Utilities.hpp"
 #include "Reflection.hpp"
 
 class Type;

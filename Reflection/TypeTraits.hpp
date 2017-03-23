@@ -98,6 +98,19 @@ inline void GenericCopyConstruct<void>(void* aObject, void* aMemory)
 {
 }
 
+
+template <typename T>
+struct RemovePossibleReference
+{
+  using type = T;
+};
+
+template <typename T>
+struct RemovePossibleReference<T&>
+{
+  using type = T;
+};
+
 template <typename T>
 struct Identity
 {

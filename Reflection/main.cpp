@@ -16,6 +16,13 @@ namespace Test
         return 42.0f;
       }
 
+
+
+      void PrintRef(float &aFloat)
+      {
+        std::cout << aFloat << std::endl;
+      }
+
       int GetX()
       {
         std::cout << "Getting x: " << x << std::endl;
@@ -37,10 +44,12 @@ namespace Test
     DefineType(Animal)
     {
       auto print = BindFunction<decltype(&Test::Test2::Animal::Print), &Test::Test2::Animal::Print>("Print");
+      auto printRef = BindFunction<decltype(&Test::Test2::Animal::PrintRef), &Test::Test2::Animal::PrintRef>("PrintRef");
       auto xProp = BindProperty<decltype(&Test::Test2::Animal::GetX), &Test::Test2::Animal::GetX,
                                 decltype(&Test::Test2::Animal::SetX), &Test::Test2::Animal::SetX>("X");
       
       GetStaticType()->AddFunction(std::move(print));
+      GetStaticType()->AddFunction(std::move(printRef));
       GetStaticType()->AddProperty(std::move(xProp));
       
       auto x = BindField<decltype(&Test::Test2::Animal::x), 
@@ -99,11 +108,13 @@ int main()
   auto char_Type = TypeId<char>();
   auto u8_Type   = TypeId<u8>();
   auto i8_Type   = TypeId<i8>();
-  auto const_char = TypeId<const char*>();
+  auto const_char_ptr = TypeId<const char*>();
+  auto const_char_ref = TypeId<const char&>();
   (void)char_Type;
   (void)u8_Type;
   (void)i8_Type;
-  (void)const_char;
+  (void)const_char_ptr;
+  (void)const_char_ref;
   
   auto animalType = Test::Test2::Animal::GetStaticType();
   auto catType = Cat::GetStaticType();
@@ -111,8 +122,16 @@ int main()
   
   Test::Test2::Animal animal;
   Cat cat;
+
+  auto x = animalType->GetFirstField("X");
+  auto y = animalType->GetFirstField("Y");
+  auto z = animalType->GetFirstField("Z");
+  auto w = animalType->GetFirstField("W");
   
   std::cout << "Return: " << animalType->GetFirstFunction("Print")->Invoke(&animal, 1).As<float>() << std::endl;
+  float f = 126.34f;
+  float &fr = f;
+  animalType->GetFirstFunction("PrintRef")->Invoke(&animal, fr);
   auto doesThisWork2 = catType->GetFirstFunction("Print")->Invoke(&cat);
   
   auto property = animalType->GetFirstProperty("X");

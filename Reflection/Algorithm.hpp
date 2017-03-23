@@ -4,9 +4,9 @@
 
 template<typename ForwardIterator, typename Type, typename Predicate> inline
 ForwardIterator CacheFriendlyLowerBound(ForwardIterator aFirst, 
-                                                 ForwardIterator aLast, 
-                                                 const Type& aValue, 
-                                                 Predicate& aPredicate)
+                                        ForwardIterator aLast, 
+                                        const Type& aValue, 
+                                        Predicate& aPredicate)
 {
   typename ForwardIterator::difference_type count = aLast - aFirst;
   typename ForwardIterator::difference_type i = count;
@@ -33,9 +33,9 @@ ForwardIterator CacheFriendlyLowerBound(ForwardIterator aFirst,
 
 template<typename ForwardIterator, typename Type, typename Predicate> inline
 ForwardIterator CacheFriendlyUpperBound(ForwardIterator aFirst,
-                                                 ForwardIterator aLast, 
-                                                 const Type& aValue, 
-                                                 Predicate& aPredicate)
+                                        ForwardIterator aLast, 
+                                        const Type& aValue, 
+                                        Predicate& aPredicate)
 {
   typename ForwardIterator::difference_type count = aLast - aFirst;
   typename ForwardIterator::difference_type i = count; 

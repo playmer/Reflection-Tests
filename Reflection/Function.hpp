@@ -50,7 +50,8 @@ public:
 
     for (size_t i = 0; i < mParameters.size(); ++i)
     {
-      if (mParameters[i].mType != aArguments[i].mType)
+      if (mParameters[i].mType != aArguments[i].mType && 
+          mParameters[i].mType->GetReferenceTo() != aArguments[i].mType)
       {
         std::cout << "Different argument types." << std::endl;
         return Any();

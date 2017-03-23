@@ -1,29 +1,27 @@
 #pragma once
 
-#ifndef CacheOrderedSet_h
-#define CacheOrderedSet_h
+#ifndef OrderedSet_h
+#define OrderedSet_h
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 
-#include "Algorithm.hpp"
 #include "Iterator.hpp"
 #include "Range.hpp"
-
 
 
 ///////////////////////////////////////
 // Class
 ///////////////////////////////////////
 template <typename KeyType, typename StoredType>
-class CacheOrderedMultiMap
+class OrderedMultiMap
 {
 public:
   using InternalContainedType = typename std::pair<KeyType, StoredType>;
   using ContainedType = typename std::pair<const KeyType, StoredType>;
   using ContainerType = typename std::vector<InternalContainedType>;
   using size_type = typename ContainerType::size_type;
-
 
   using iterator = RandomAccessIterator<ContainedType>;
   using const_iterator = ConstRandomAccessIterator<ContainedType>;
@@ -45,27 +43,27 @@ public:
   //////////////////////////////
   // Data Storage
   //////////////////////////////
-  template <typename KeyPossibleType, typename... Arguments>
+	template <typename KeyPossibleType, typename... Arguments>
   iterator Emplace(const KeyPossibleType &aKey, Arguments &&...aStoredTypeArguments)
   {
     if (mData.size() == 0)
     {
-      auto emplacedData = mData.emplace(mData.begin(),
-        std::forward<const KeyPossibleType &>(aKey),
-        std::forward<Arguments &&>(aStoredTypeArguments)...);
-
-
+      auto emplacedData = mData.emplace(mData.begin(), 
+                                        std::forward<const KeyPossibleType &>(aKey), 
+                                        std::forward<Arguments &&>(aStoredTypeArguments)...);
+          
+          
       return iterator(reinterpret_cast<ContainedType*>(&(*emplacedData)));
     }
 
-    auto iter = CacheFriendlyUpperBound(mData.begin(),
-      mData.end(),
-      aKey,
-      comparatorUpperBound<KeyPossibleType, StoredType>);
-
-    auto emplacedData = mData.emplace(iter,
-      std::forward<const KeyPossibleType &>(aKey),
-      std::forward<Arguments &&>(aStoredTypeArguments)...);
+    auto iter = std::upper_bound(mData.begin(), 
+                                 mData.end(), 
+                                 aKey, 
+                                 comparatorUpperBound<KeyPossibleType, StoredType>);
+      
+    auto emplacedData = mData.emplace(iter, 
+                                      std::forward<const KeyPossibleType &>(aKey), 
+                                      std::forward<Arguments &&>(aStoredTypeArguments)...);
 
     return iterator(reinterpret_cast<ContainedType*>(&(*emplacedData)));
   }
@@ -83,37 +81,12 @@ private:
       return reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + size()));
     }
 
-    auto iter = CacheFriendlyLowerBound(mData.begin(),
-      mData.end(),
-      aKey,
-      comparatorLowerBound<KeyPossibleType, StoredType>);
+    auto iter = std::lower_bound(mData.begin(),
+                                 mData.end(),
+                                 aKey,
+                                 comparatorLowerBound<KeyPossibleType, StoredType>);
 
     if (iter != mData.end() && iter->first == aKey)
-    {
-      return reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + (iter - mData.begin())));
-    }
-    else
-    {
-      return reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + size()));
-    }
-  }
-
-
-  template <typename KeyPossibleType>
-  ContainedType* FindLastContainedType(const KeyPossibleType &aKey)
-  {
-    // Empty optimization
-    if (0 == size())
-    {
-      return reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + size()));
-    }
-
-    auto iter = CacheFriendlyUpperBound(mData.begin(),
-      mData.end(),
-      aKey,
-      comparatorUpperBound<KeyPossibleType, StoredType>);
-
-    if (iter != mData.begin() && (--iter)->first == aKey)
     {
       return reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + (iter - mData.begin())));
     }
@@ -137,17 +110,29 @@ public:
     return const_cast<const ContainedType*>(FindFirstContainedType(aKey));
   }
 
+
+      
   template <typename KeyPossibleType>
-  iterator FindLast(const KeyPossibleType &aKey)
+  iterator FindLast(const KeyPossibleType &aKey) const
   {
-    return FindLastContainedType(aKey);
+    // Empty Optimization
+    if (0 == size()) return end();
+
+    auto iter = std::upper_bound(mData.begin(), 
+                                  mData.end(), 
+                                  aKey, 
+                                  comparatorUpperBound<KeyPossibleType, StoredType>);
+
+    if (iter != mData.begin() && (--iter)->first == aKey)
+    {
+      return iterator(reinterpret_cast<ContainedType*>(&(*iter)));
+    }
+    else
+    {
+      return end();
+    }
   }
 
-  template <typename KeyPossibleType>
-  const_iterator FindLast(const KeyPossibleType &aKey) const
-  {
-    return const_cast<const ContainedType*>(FindLastContainedType(aKey));
-  }
 
   template <typename KeyPossibleType>
   range FindAll(const KeyPossibleType &aKey)
@@ -158,11 +143,11 @@ public:
       return range(end(), end());
     }
 
-    auto iter = CacheFriendlyLowerBound(mData.begin(),
-      mData.end(),
-      aKey,
-      comparatorLowerBound<KeyPossibleType, StoredType>);
-
+    auto iter = std::lower_bound(mData.begin(),
+                                 mData.end(),
+                                 aKey,
+                                 comparatorLowerBound<KeyPossibleType, StoredType>);
+      
     if (iter != mData.end() && iter->first == aKey)
     {
       iterator first = iterator(reinterpret_cast<ContainedType*>(&(*iter)));
@@ -241,17 +226,17 @@ public:
   // Iterators
   //////////////////////////////
 
-  range All()
-  {
-    return range(begin(), end());
+  range All() 
+  { 
+    return range(begin(), end()); 
   };
 
-  const_iterator cbegin() const
-  {
+  const_iterator cbegin() const 
+  { 
     return const_cast<const ContainedType*>(reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data())));
   }
 
-  const_iterator cend() const
+  const_iterator cend() const 
   {
     return const_cast<const ContainedType*>(reinterpret_cast<ContainedType*>(const_cast<InternalContainedType*>(mData.data() + size())));
   }
@@ -266,16 +251,16 @@ public:
     return cend();
   }
 
-  iterator begin()
-  {
+  iterator begin() 
+  { 
     return iterator(reinterpret_cast<ContainedType*>(mData.data()));
   }
 
   iterator end()
-  {
+  { 
     return iterator(reinterpret_cast<ContainedType*>(mData.data() + mData.size()));
   }
-
+      
   template <typename PossibleKey, typename PossiblePointer, typename Comparison>
   iterator FindIteratorByPointer(PossibleKey aKey, PossiblePointer aValue, Comparison aComparison)
   {

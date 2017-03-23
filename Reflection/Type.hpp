@@ -2,7 +2,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "CacheOrderedMultiMap.hpp"
+#include "OrderedMultiMap.hpp"
 #include "ForwardDeclarations.hpp"
 #include "Utilities.hpp"
 #include "Reflection.hpp"
@@ -141,7 +141,7 @@ public:
   void AddProperty(std::unique_ptr<Property> aProperty);
   void AddField(std::unique_ptr<Field>    aField);
 
-  CacheOrderedMultiMap<std::string, std::unique_ptr<Function>>::range GetFunctionRange(const char *aName)
+  OrderedMultiMap<std::string, std::unique_ptr<Function>>::range GetFunctionRange(const char *aName)
   {
     std::string name{ aName };
   
@@ -155,7 +155,7 @@ public:
     return mFunctions.FindFirst(name)->second.get();
   }
 
-  CacheOrderedMultiMap<std::string, std::unique_ptr<Property>>::range GetPropertyRange(const char *aName)
+  OrderedMultiMap<std::string, std::unique_ptr<Property>>::range GetPropertyRange(const char *aName)
   {
     std::string name{ aName };
 
@@ -170,7 +170,7 @@ public:
   }
 
 
-  CacheOrderedMultiMap<std::string, std::unique_ptr<Property>>::range GetFieldRange(const char *aName)
+  OrderedMultiMap<std::string, std::unique_ptr<Property>>::range GetFieldRange(const char *aName)
   {
     std::string name{ aName };
 
@@ -191,7 +191,7 @@ public:
 
   Type* GetReferenceTo()
   {
-    return mPointerTo;
+    return mReferenceTo;
   }
 
   Type* GetBaseType()
@@ -200,9 +200,9 @@ public:
   }
 
 private:
-  CacheOrderedMultiMap<std::string, std::unique_ptr<Function>> mFunctions;
-  CacheOrderedMultiMap<std::string, std::unique_ptr<Property>> mProperties;
-  CacheOrderedMultiMap<std::string, std::unique_ptr<Property>> mFields;
+  OrderedMultiMap<std::string, std::unique_ptr<Function>> mFunctions;
+  OrderedMultiMap<std::string, std::unique_ptr<Property>> mProperties;
+  OrderedMultiMap<std::string, std::unique_ptr<Property>> mFields;
   std::string mName;
   size_t mHash;
   size_t mAllocatedSize;
@@ -409,11 +409,11 @@ template <typename T>
 inline Type::Type(Type *aType, Modifier aModifier, T *aNull, bool aFalse)
   : mName(GetTypeName<T&>().data()),
     mHash(std::hash<std::string>{}(mName)),
-    mAllocatedSize(SizeOf<T&>()),
-    mStoredSize(SizeOf<T&>()),
-    mDefaultConstructor(GenericDefaultConstruct<T&>),
-    mCopyConstructor(GenericCopyConstruct<T&>),
-    mDestructor(GenericDestruct<T&>),
+    mAllocatedSize(SizeOf<T*>()),
+    mStoredSize(SizeOf<T*>()),
+    mDefaultConstructor(GenericDefaultConstruct<T*>),
+    mCopyConstructor(GenericCopyConstruct<T*>),
+    mDestructor(GenericDestruct<T*>),
     mReferenceTo(nullptr),
     mPointerTo(nullptr),
     mConstOf(nullptr),

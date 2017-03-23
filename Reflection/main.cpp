@@ -45,17 +45,17 @@ namespace Test
       
       auto x = BindField<decltype(&Test::Test2::Animal::x), 
                                   &Test::Test2::Animal::x>("X");
-      //auto y = BindField<decltype(&Test::Test2::Animal::y), 
-      //                            &Test::Test2::Animal::y>("Y");
-      //auto z = BindField<decltype(&Test::Test2::Animal::z), 
-      //                            &Test::Test2::Animal::z>("Z");
-      //auto w = BindField<decltype(&Test::Test2::Animal::w), 
-      //                            &Test::Test2::Animal::w>("W");
+      auto y = BindField<decltype(&Test::Test2::Animal::y), 
+                                  &Test::Test2::Animal::y>("Y");
+      auto z = BindField<decltype(&Test::Test2::Animal::z), 
+                                  &Test::Test2::Animal::z>("Z");
+      auto w = BindField<decltype(&Test::Test2::Animal::w), 
+                                  &Test::Test2::Animal::w>("W");
       
       GetStaticType()->AddField(std::move(x));
-      //GetStaticType()->AddField(std::move(y));
-      //GetStaticType()->AddField(std::move(z));
-      //GetStaticType()->AddField(std::move(w));
+      GetStaticType()->AddField(std::move(y));
+      GetStaticType()->AddField(std::move(z));
+      GetStaticType()->AddField(std::move(w));
     }
   }
 }

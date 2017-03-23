@@ -1,3 +1,4 @@
+
 #pragma once
 
 constexpr size_t StringLength(const char *aString)
@@ -73,7 +74,7 @@ struct StringRange
 
   constexpr StringRange(const char *aBegin)
     : mBegin(aBegin),
-      mEnd(aBegin + StringLength(aBegin))
+    mEnd(aBegin + StringLength(aBegin))
   {
 
   }
@@ -113,6 +114,12 @@ struct ConstexprTokenWriter : public ConstexprToken<tConstSize>
   constexpr ConstexprTokenWriter()
     : mWritingPosition(this->mData)
   {
+    for (size_t i = 0; i < tConstSize; i++)
+    {
+      this->mData[i] = 0;
+    }
+
+    this->mData[tConstSize] = { '\0' };
   }
 
 
@@ -165,4 +172,10 @@ constexpr size_t GetFirstInstanceOfCharacter(const char *aString, size_t aSize, 
 
   return toReturn;
 }
+
+
+
+
+
+
 

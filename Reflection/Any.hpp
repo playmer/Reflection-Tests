@@ -3,6 +3,7 @@
 #include "ForwardDeclarations.hpp"
 #include "Utilities.hpp"
 #include "Type.hpp"
+#include "TypeTraits.hpp"
 
 
 class Any
@@ -98,13 +99,33 @@ public:
   template <typename T>
   T& As()
   {
-    runtime_assert(IsType<T>(), "This Any is being casted into the incorrect type.");
+    runtime_assert(IsType<T>() || mType == TypeId<T>()->GetReferenceTo(), "This Any is being casted into the incorrect type.");
 
-    return *reinterpret_cast<T*>(GetData());
+    return TypeCasting<T>::TypeCast(GetData());
   }
 
   Type* mType;
   byte mData[16];
+
+
+private:
+  template<typename tTo>
+  struct TypeCasting
+  {
+    static inline tTo& TypeCast(byte *aData)
+    {
+      return *reinterpret_cast<tTo*>(aData);
+    }
+  };
+
+  template<typename tTo>
+  struct TypeCasting<tTo&>
+  {
+    static inline tTo& TypeCast(byte *aData)
+    {
+      return *reinterpret_cast<tTo*>(aData);
+    }
+  };
 };
 
 

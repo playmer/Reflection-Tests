@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ConstexprString.hpp"
-
 #define CONSTEXPR_FUNCTION_SIGNATURE __FUNCSIG__
 
 constexpr size_t GetTypeStart(const char *aTypeNameString)
@@ -111,12 +110,37 @@ constexpr auto GetTypeName()
   constexpr const char* functionName = CONSTEXPR_FUNCTION_SIGNATURE;
 
   // TODO: Should also work for GCC.
-  //#if defined(__clang__)
-  //  size_t lastSpace = GetLastInstanceOfCharacter(typeName, StringLength(typeName), '=');
-  //  size_t typeNameLength = totalLength - lastSpace - GetTypeEnd() - 2;
-  //
-  //  ConstexprToken<typeNameLength> token{ typeName + lastSpace + 2 };
-  //#elif defined(_MSC_VER)
+#if defined(__clang__)
+  constexpr size_t firstBracket = GetFirstInstanceOfCharacter(functionName, StringLength(functionName), '[') + 1;
+  constexpr size_t lastBracket = GetLastInstanceOfCharacter(functionName, StringLength(functionName), ']');
+
+  constexpr size_t typenameTotalRangeSize = lastBracket - firstBracket;
+
+  ConstexprTokenWriter<typenameTotalRangeSize + 1> finalName;
+
+  StringRange totalType{ functionName + firstBracket, functionName + lastBracket };
+
+  size_t i = 0;
+
+  while (totalType.mBegin < totalType.mEnd)
+  {
+    auto token = GetToken(totalType);
+
+    if (i < 2)
+    {
+      ++token.mEnd;
+    }
+    else
+    {
+      finalName.Write(token);
+    }
+
+    totalType.mBegin = token.mEnd;
+    ++i;
+  }
+
+  //auto finalName = functionName;
+#elif defined(_MSC_VER)
   constexpr size_t firstArrow = GetFirstInstanceOfCharacter(functionName, StringLength(functionName), '<') + 1;
   constexpr size_t lastArrow = GetLastInstanceOfCharacter(functionName, StringLength(functionName), '>');
 
@@ -141,7 +165,7 @@ constexpr auto GetTypeName()
 
     totalType.mBegin = token.mEnd;
   }
-  //#endif
+#endif
 
   return finalName;
 }

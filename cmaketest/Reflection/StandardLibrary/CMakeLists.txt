@@ -1,0 +1,11 @@
+Set(Previous_Reflection_Source ${Reflection_Source})
+
+AddFile(Reflection_Source Previous_Reflection_Source Any.hpp)
+AddFile(Reflection_Source Previous_Reflection_Source ConstexprString.hpp)
+AddFile(Reflection_Source Previous_Reflection_Source Iterator.hpp)
+AddFile(Reflection_Source Previous_Reflection_Source OrderedMultiMap.hpp)
+AddFile(Reflection_Source Previous_Reflection_Source Range.hpp)
+AddFile(Reflection_Source Previous_Reflection_Source TypeTraits.hpp)
+AddFile(Reflection_Source Previous_Reflection_Source Utilities.hpp)
+
+Set(Reflection_Source ${Previous_Reflection_Source} PARENT_SCOPE)

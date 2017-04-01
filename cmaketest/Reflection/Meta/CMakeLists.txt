@@ -1,13 +1,13 @@
 Set(Previous_Reflection_Source ${Reflection_Source})
 
-AddFile(Reflection_Source Previous_Reflection_Source Attribute.hpp)
 AddFile(Reflection_Source Previous_Reflection_Source Attribute.cpp)
+AddFile(Reflection_Source Previous_Reflection_Source Attribute.hpp)
 AddFile(Reflection_Source Previous_Reflection_Source Field.hpp)
 AddFile(Reflection_Source Previous_Reflection_Source ForwardDeclarations.hpp)
 AddFile(Reflection_Source Previous_Reflection_Source Function.hpp)
 AddFile(Reflection_Source Previous_Reflection_Source Property.hpp)
 AddFile(Reflection_Source Previous_Reflection_Source Reflection.hpp)
-AddFile(Reflection_Source Previous_Reflection_Source Type.hpp)
 AddFile(Reflection_Source Previous_Reflection_Source Type.cpp)
+AddFile(Reflection_Source Previous_Reflection_Source Type.hpp)
 
 Set(Reflection_Source ${Previous_Reflection_Source} PARENT_SCOPE)

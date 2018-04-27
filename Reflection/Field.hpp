@@ -3,49 +3,93 @@
 #include "Property.hpp"
 #include "TypeTraits.hpp"
 
-class Field : public Property
+namespace YTE
 {
-public:
-  DeclareType(Field)
-  Field(Field&) = delete;
-
-  Field(const char *aName,
-        std::unique_ptr<Function> aGetter, 
-        std::unique_ptr<Function> aSetter)
-   : Property(aName, std::move(aGetter), std::move(aSetter))
+  class Field : public Property
   {
-    runtime_assert((nullptr != mGetter) && (nullptr != mSetter), 
-                   "Both the getter and setter must be set.");
-  }
+  public:
+    YTEDeclareType(Field)
+      Field(Field&) = delete;
+
+    Field(const char *aName,
+          std::unique_ptr<Function> aGetter,
+          std::unique_ptr<Function> aSetter)
+      : Property(aName, std::move(aGetter), std::move(aSetter))
+    {
+    }
+
+    template<typename FieldPointerType, FieldPointerType aFieldPointer>
+    static size_t GetOffset()
+    {
+      using ObjectType = typename DecomposeFieldPointer<FieldPointerType>::ObjectType;
+      using FieldType = typename DecomposeFieldPointer<FieldPointerType>::FieldType;
+      std::array<char, sizeof(ObjectType)> selfData;
+      auto selfVoid = static_cast<void*>(selfData.data());
+      ObjectType *self{ static_cast<ObjectType*>(selfVoid) };
+
+      auto bytePtr = reinterpret_cast<byte*>(&(self->*aFieldPointer));
+      byte *byteAtSelf{ static_cast<byte*>(selfVoid) };
+      
+      return bytePtr - byteAtSelf;
+    }
+
+    template<typename FieldPointerType, FieldPointerType aFieldPointer>
+    static Any Getter(std::vector<Any>& aArguments)
+    {
+      auto self = aArguments.at(0).As<typename DecomposeFieldPointer<FieldPointerType>::ObjectType*>();
+      return Any(self->*aFieldPointer);
+    }
+
+    template<typename FieldPointerType, FieldPointerType aFieldPointer>
+    static Any Setter(std::vector<Any>& aArguments)
+    {
+      auto self = aArguments.at(0).As<typename DecomposeFieldPointer<FieldPointerType>::ObjectType*>();
+      self->*aFieldPointer = aArguments.at(1).As<typename DecomposeFieldPointer<FieldPointerType>::FieldType>();
+      return Any();
+    }
+
+    void SetOffset(size_t aOffset)
+    {
+      mOffset = aOffset;
+    }
+
+    size_t GetOffset() { return mOffset; }
+
+  private:
+    size_t mOffset;
+  };
+
+
+
 
   template<typename FieldPointerType, FieldPointerType aFieldPointer>
-  static Any Getter(std::vector<Any>& aArguments)
+  static Field& BindField(const char *aName, PropertyBinding aBinding, Type *aType)
   {
-    auto self = aArguments.at(0).As<typename DecomposeFieldPointer<FieldPointerType>::ObjectType*>();
-    return Any(self->*aFieldPointer);
+    using ObjectType = typename DecomposeFieldPointer<FieldPointerType>::ObjectType;
+    using FieldType = typename DecomposeFieldPointer<FieldPointerType>::FieldType;
+
+    std::unique_ptr<Function> getter;
+    std::unique_ptr<Function> setter;
+
+    if (PropertyBinding::Get == aBinding || PropertyBinding::GetSet == aBinding)
+    {
+      getter = Binding<FieldType(ObjectType::*)()>::BindPassedFunction("Getter", Field::Getter<FieldPointerType, aFieldPointer>);
+    }
+
+    if (PropertyBinding::Set == aBinding || PropertyBinding::GetSet == aBinding)
+    {
+      setter = Binding<void(ObjectType::*)(FieldType)>::BindPassedFunction("Setter", Field::Setter<FieldPointerType, aFieldPointer>);
+    }
+
+    auto field = std::make_unique<Field>(aName, std::move(getter), std::move(setter));
+
+    auto type = TypeId<typename DecomposeFieldPointer<FieldPointerType>::FieldType>();
+
+    field->SetPropertyType(type);
+    field->SetOffset(Field::GetOffset<FieldPointerType, aFieldPointer>());
+    
+    auto ptr = aType->AddField(std::move(field));
+    return *ptr;
   }
 
-  template<typename FieldPointerType, FieldPointerType aFieldPointer>
-  static Any Setter(std::vector<Any>& aArguments)
-  {
-    auto self = aArguments.at(0).As<typename DecomposeFieldPointer<FieldPointerType>::ObjectType*>();
-    self->*aFieldPointer = aArguments.at(1).As<typename DecomposeFieldPointer<FieldPointerType>::FieldType>();
-    return Any();
-  }
-
-private:
-};
-
-
-
-
-template<typename FieldPointerType, FieldPointerType aFieldPointer>
-static std::unique_ptr<Field> BindField(const char *aName)
-{
-  using ObjectType = typename DecomposeFieldPointer<FieldPointerType>::ObjectType;
-  using FieldType = typename DecomposeFieldPointer<FieldPointerType>::FieldType;
-  auto getter = Binding<FieldType (ObjectType::*)()>::BindPassedFunction("Getter", Field::Getter<FieldPointerType, aFieldPointer>);
-  auto setter = Binding<void(ObjectType::*)(FieldType)>::BindPassedFunction("Setter", Field::Setter<FieldPointerType, aFieldPointer>);
-  return std::make_unique <Field> (aName, std::move(getter), std::move(setter));
 }
-

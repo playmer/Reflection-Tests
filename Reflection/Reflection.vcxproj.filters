@@ -27,9 +27,6 @@
     <ClInclude Include="Type.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Algorithm.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Iterator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,6 +57,12 @@
     <ClInclude Include="OrderedMultiMap.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="String\String.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderedMap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -69,6 +72,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Attribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="String\String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -123,7 +123,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Algorithm.hpp" />
     <ClInclude Include="Any.hpp" />
     <ClInclude Include="Attribute.hpp" />
     <ClInclude Include="ConstexprString.hpp" />
@@ -131,10 +130,12 @@
     <ClInclude Include="ForwardDeclarations.hpp" />
     <ClInclude Include="Function.hpp" />
     <ClInclude Include="Iterator.hpp" />
+    <ClInclude Include="OrderedMap.hpp" />
     <ClInclude Include="OrderedMultiMap.hpp" />
     <ClInclude Include="Property.hpp" />
     <ClInclude Include="Range.hpp" />
     <ClInclude Include="Reflection.hpp" />
+    <ClInclude Include="String\String.hpp" />
     <ClInclude Include="Type.hpp" />
     <ClInclude Include="Utilities.hpp" />
     <ClInclude Include="TypeTraits.hpp" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="String\String.cpp" />
     <ClCompile Include="Type.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

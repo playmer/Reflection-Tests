@@ -1,8 +1,24 @@
 #pragma once
 #include "Type.hpp"
 
-
-class Attribute : public Base
+namespace YTE
 {
-  DeclareType(Attribute)
-};
+  class Component;
+  class Object;
+
+  class Attribute : public Base
+  {
+  public:
+    YTEDeclareType(Attribute)
+  };
+
+  class Serializable : public Attribute
+  {
+  public:
+    YTEDeclareType(Serializable);
+    Serializable(DocumentedObject *aObject);
+  };
+}
+
+
+

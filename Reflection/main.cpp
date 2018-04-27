@@ -60,5 +60,5 @@ YTEDefineExternalType(YTE::ControllerId)
 
 int main()
 {
-  auto func = YTE::Binding<decltype(&YTE::GamepadSystem::GetXboxController)>:: template BindFunction<&YTE::GamepadSystem::GetXboxController>("GetXboxController");
+  auto caller = YTE::Binding<decltype(&YTE::GamepadSystem::GetXboxController)>::template Caller<&YTE::GamepadSystem::GetXboxController>;
 }

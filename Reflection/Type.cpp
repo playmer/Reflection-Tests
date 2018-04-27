@@ -242,6 +242,38 @@ namespace YTE
     //}
   }
 
+
+  void Function::SetParameterNames(std::initializer_list<const char *> aNames)
+  {
+    // Member Function
+    if (false == mStaticOrFree &&
+      aNames.size() == (mParameters.size() - 1))
+    {
+      mParameters[0].mName = "aThisPointer";
+
+      for (size_t i = 1; i < mParameters.size(); ++i)
+      {
+        mParameters[i].mName = *(aNames.begin() + i - 1);
+      }
+    }
+    else if (aNames.size() == mParameters.size())
+    {
+      for (size_t i = 0; i < mParameters.size(); ++i)
+      {
+        mParameters[i].mName = *(aNames.begin() + i);
+      }
+    }
+    else
+    {
+      for (size_t i = 0; i < mParameters.size(); ++i)
+      {
+        std::string argumentName{ "aArgument" };
+        argumentName += std::to_string(i);
+        mParameters[i].mName = argumentName;
+      }
+    }
+  }
+
   YTEDefineType(Field)
   {
     YTERegisterType(Field);

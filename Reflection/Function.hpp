@@ -276,15 +276,13 @@ namespace YTE
     static Any Caller(std::vector<Any>& aArguments)
     {
       auto self = aArguments.at(0).As<ObjectType*>();
-
+      
       size_t i = 1;
-
+      
       // We get a warning for functions that don't have arguments and thus don't use these.
       YTEUnusedArgument(aArguments);
       YTEUnusedArgument(i);
-
-      (self->*BoundFunc)(aArguments.at(i++).As<Arguments>()...);
-
+            
       if constexpr(std::is_void<Return>::value)
       {
         (self->*BoundFunc)(aArguments.at(i++).As<Arguments>()...);
@@ -296,6 +294,9 @@ namespace YTE
         Any toReturn{ capture, TypeId<Return>(), false == std::is_reference<Return>::value };
         return toReturn;
       }
+
+      (void)aArguments;
+      return Any{};
     }
 
     static std::unique_ptr<Function> BindPassedFunction(const char *name, CallingType aCaller)

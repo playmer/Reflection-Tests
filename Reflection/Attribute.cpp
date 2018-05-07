@@ -1,3 +1,4 @@
+#include "Meta.hpp"
 #include "Attribute.hpp"
 
 namespace YTE

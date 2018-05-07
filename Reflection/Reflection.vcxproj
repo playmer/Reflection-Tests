@@ -130,6 +130,7 @@
     <ClInclude Include="ForwardDeclarations.hpp" />
     <ClInclude Include="Function.hpp" />
     <ClInclude Include="Iterator.hpp" />
+    <ClInclude Include="Meta.hpp" />
     <ClInclude Include="OrderedMap.hpp" />
     <ClInclude Include="OrderedMultiMap.hpp" />
     <ClInclude Include="Property.hpp" />
@@ -142,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Attribute.cpp" />
+    <ClCompile Include="Function.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="String\String.cpp" />
     <ClCompile Include="Type.cpp" />

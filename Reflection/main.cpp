@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Type.hpp"
+#include "Meta.hpp"
 
 namespace YTE
 {
@@ -43,11 +43,16 @@ namespace YTE
     {
       return nullptr;
     }
+
+    void Set(ControllerId) {};
+    ControllerId Get() { return ControllerId::Xbox_P1; };
   };
 
   YTEDefineType(GamepadSystem)
   {
     YTERegisterType(GamepadSystem);
+
+    YTEBindProperty(&GamepadSystem::Get, &GamepadSystem::Set, "asd");
   }
 }
 
@@ -62,6 +67,6 @@ int main()
 {
   // These will all ICE.
   auto caller1 = YTE::Binding<decltype(&YTE::STATIC_GetXboxController)>::template Caller<&YTE::STATIC_GetXboxController>;
-  auto caller2 = YTE::Binding<decltype(&YTE::GamepadSystem::GetXboxControllerConst)>::template Caller<&YTE::GamepadSystem::GetXboxControllerConst>;
-  auto caller3 = YTE::Binding<decltype(&YTE::GamepadSystem::GetXboxController)>::template Caller<&YTE::GamepadSystem::GetXboxController>;
+  //auto caller2 = YTE::Binding<decltype(&YTE::GamepadSystem::GetXboxControllerConst)>::template Caller<&YTE::GamepadSystem::GetXboxControllerConst>;
+  //auto caller3 = YTE::Binding<decltype(&YTE::GamepadSystem::GetXboxController)>::template Caller<&YTE::GamepadSystem::GetXboxController>;
 }

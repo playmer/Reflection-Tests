@@ -177,7 +177,7 @@ namespace YTE
     template <typename T>
     T& As()
     {
-      runtime_assert(IsType<T>(), "This Any is being casted into the incorrect type.");
+      //runtime_assert(IsType<T>(), "This Any is being casted into the incorrect type.");
 
       return TypeCasting<T>::TypeCast(GetData());
     }

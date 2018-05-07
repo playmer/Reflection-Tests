@@ -1,3 +1,4 @@
+#include "Meta.hpp"
 #include "Type.hpp"
 
 namespace YTE
@@ -164,21 +165,6 @@ namespace YTE
     return toReturn;
   }
 
-  YTEDefineType(Function)
-  {
-    YTERegisterType(Function);
-
-    YTEBindProperty(&Function::GetOwningType, YTENoSetter, "OwningType")
-      .Description() = "Type that owns this Function.";
-    YTEBindProperty(&Function::GetName, YTENoSetter, "Name")
-      .Description() = "Name of the property.";
-    YTEBindProperty(&Function::GetReturnType, YTENoSetter, "ReturnType")
-      .Description() = "The return type of the function.";
-    YTEBindProperty(&Function::IsStaticOrFree, YTENoSetter, "StaticOrFree")
-      .Description() = "Lets you know if this function is a static or free function, as in not a member function.";
-  }
-
-
   YTEDefineType(Property)
   {
     YTERegisterType(Property);
@@ -242,37 +228,6 @@ namespace YTE
     //}
   }
 
-
-  void Function::SetParameterNames(std::initializer_list<const char *> aNames)
-  {
-    // Member Function
-    if (false == mStaticOrFree &&
-      aNames.size() == (mParameters.size() - 1))
-    {
-      mParameters[0].mName = "aThisPointer";
-
-      for (size_t i = 1; i < mParameters.size(); ++i)
-      {
-        mParameters[i].mName = *(aNames.begin() + i - 1);
-      }
-    }
-    else if (aNames.size() == mParameters.size())
-    {
-      for (size_t i = 0; i < mParameters.size(); ++i)
-      {
-        mParameters[i].mName = *(aNames.begin() + i);
-      }
-    }
-    else
-    {
-      for (size_t i = 0; i < mParameters.size(); ++i)
-      {
-        std::string argumentName{ "aArgument" };
-        argumentName += std::to_string(i);
-        mParameters[i].mName = argumentName;
-      }
-    }
-  }
 
   YTEDefineType(Field)
   {

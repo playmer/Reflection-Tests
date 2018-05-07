@@ -39,8 +39,8 @@ namespace YTE
             typename SetterFunctionSignature, SetterFunctionSignature SetterFunction>
   static Property& BindProperty(const char *aName, Type *aType)
   {
-    auto getter = Binding<GetterFunctionSignature>:: template BindFunction<GetterFunction>("Getter");
-    auto setter = Binding<SetterFunctionSignature>:: template BindFunction<SetterFunction>("Setter");
+    auto getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<GetterFunction>("Getter");
+    auto setter = Detail::Meta::FunctionBinding<SetterFunctionSignature>:: template BindFunction<SetterFunction>("Setter");
 
     auto property = std::make_unique<Property>(aName, std::move(getter), std::move(setter));
     

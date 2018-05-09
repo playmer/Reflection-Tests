@@ -259,37 +259,49 @@ namespace YTE
     using ObjectType = static_switch <TrueOrFalse(std::is_same<ObjectType1, nullptr_t>::value), ObjectType1, ObjectType2>;
   };
 
-  template <typename Return, typename Arg = Return>
+  template <typename Return>
   struct CountFunctionArguments
   {
 
   };
 
   template <typename Return, typename ...Arguments>
-  struct CountFunctionArguments<Return(*)(Arguments...)>
+  struct CountFunctionArguments<Return(Arguments...)>
   {
     constexpr static size_t Size()
     {
       return sizeof...(Arguments);
     }
+  };
+
+  template <typename Return, typename ...Arguments>
+  struct CountFunctionArguments<Return(Arguments...) noexcept>
+    : public CountFunctionArguments<Return(Arguments...)>
+  {
+  };
+
+  template <typename Return, typename ...Arguments>
+  struct CountFunctionArguments<Return(*)(Arguments...)>
+    : public CountFunctionArguments<Return(Arguments...)>
+  {
+  };
+
+  template <typename Return, typename ...Arguments>
+  struct CountFunctionArguments<Return(*)(Arguments...) noexcept>
+    : public CountFunctionArguments<Return(Arguments...)>
+  {
   };
 
   template <typename Return, typename Object, typename ...Arguments>
   struct CountFunctionArguments<Return(Object::*)(Arguments...)>
+    : public CountFunctionArguments<Return(Arguments...)>
   {
-    constexpr static size_t Size()
-    {
-      return sizeof...(Arguments);
-    }
   };
 
   template <typename Return, typename Object, typename ...Arguments>
   struct CountFunctionArguments<Return(Object::*)(Arguments...) const>
+    : public CountFunctionArguments<Return(Arguments...)>
   {
-    constexpr static size_t Size()
-    {
-      return sizeof...(Arguments);
-    }
   };
 
 
@@ -417,4 +429,10 @@ namespace YTE
   {
     typedef T type;
   };
+
+  template <auto tValue>
+  constexpr decltype(tValue) ReturnValue()
+  {
+    return tValue;
+  }
 }

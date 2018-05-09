@@ -11,7 +11,7 @@ namespace YTE
 
   YTEDefineType(XboxController)
   {
-    YTERegisterType(XboxController);
+    RegisterType<XboxController>();
   }
 
   enum class ControllerId : uint32_t
@@ -50,9 +50,9 @@ namespace YTE
 
   YTEDefineType(GamepadSystem)
   {
-    YTERegisterType(GamepadSystem);
+    RegisterType<GamepadSystem>();
 
-    YTEBindProperty(&GamepadSystem::Get, &GamepadSystem::Set, "asd");
+    //YTEBindProperty(&GamepadSystem::Get, &GamepadSystem::Set, "asd");
   }
 }
 
@@ -60,13 +60,14 @@ YTEDeclareExternalType(YTE::ControllerId);
 
 YTEDefineExternalType(YTE::ControllerId)
 {
-  YTERegisterType(YTE::ControllerId);
+  RegisterType<YTE::ControllerId>();
+
+  TypeBuilder<YTE::ControllerId> builder;
+
+  //builder.Enum<YTE::ControllerId::Xbox_P1>("Xbox_P1");
 }
+
 
 int main()
 {
-  // These will all ICE.
-  auto caller1 = YTE::Binding<decltype(&YTE::STATIC_GetXboxController)>::template Caller<&YTE::STATIC_GetXboxController>;
-  //auto caller2 = YTE::Binding<decltype(&YTE::GamepadSystem::GetXboxControllerConst)>::template Caller<&YTE::GamepadSystem::GetXboxControllerConst>;
-  //auto caller3 = YTE::Binding<decltype(&YTE::GamepadSystem::GetXboxController)>::template Caller<&YTE::GamepadSystem::GetXboxController>;
 }

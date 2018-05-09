@@ -33,6 +33,7 @@ namespace YTE
     std::unique_ptr<Function> mSetter;
   };
 
+  
 
 
   template <typename GetterFunctionSignature, GetterFunctionSignature GetterFunction,

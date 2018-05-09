@@ -7,6 +7,7 @@
 #include "OrderedMultiMap.hpp"
 #include "OrderedMap.hpp"
 #include "Utilities.hpp"
+#include "TypeTraits.hpp"
 
 #include "ForwardDeclarations.hpp"
 #include "Reflection.hpp"
@@ -62,58 +63,51 @@ void Name::InitializeType()
     GetSet
   };
 
+//#define YTEBindFunction(aFunctionPointer, aOverloadResolution, aFunctionName, aInitializerListOfNames)  \
+//  ::YTE::BindFunction<decltype(aOverloadResolution aFunctionPointer),                                   \
+//               aFunctionPointer,                                                                        \
+//               std::initializer_list<const char*>aInitializerListOfNames.size()>(                       \
+//    aFunctionName,                                                                                      \
+//    ::YTE::TypeId<::YTE::DecomposeFunctionObjectType<decltype(aOverloadResolution aFunctionPointer)>::ObjectType>(), \
+//    aInitializerListOfNames)
+//
+//#define YTEBindStaticOrFreeFunction(aType, aFunctionPointer, aOverloadResolution, aFunctionName, aInitializerListOfNames) \
+//  ::YTE::BindFunction<decltype(aOverloadResolution aFunctionPointer),                                                     \
+//                      aFunctionPointer,                                                                                   \
+//                      std::initializer_list<const char*>aInitializerListOfNames.size()>(aFunctionName,                    \
+//                                                                                        ::YTE::TypeId<aType>(),           \
+//                                                                                        aInitializerListOfNames)
+//
+//  template<typename tEnumValueType, tEnumValueType tValue>
+//  tEnumValueType GetEnumAsNativeType()
+//  {
+//    return tValue;
+//  }
+//
+//#define builder.Enum<aEnumValue>(aEnumName)    \
+//  ::YTE::BindFunction<decltype(GetEnumAsNativeType<typename std::underlying_type<decltype(aEnumValue)>::type, aEnumValue>),    \
+//                      GetEnumAsNativeType<typename std::underlying_type<decltype(aEnumValue)>::type, aEnumValue>,              \
+//                      std::initializer_list<const char*>YTENoNames.size()>(aEnumName,                                          \
+//                                                                           ::YTE::TypeId<decltype(aEnumValue)>(),              \
+//                                                                           YTENoNames)
+//
+//#define builder.Field<aFieldPointer>( aName, aPropertyBinding)              \
+//  ::YTE::BindField<decltype(aFieldPointer), aFieldPointer>(               \
+//    aName,                                                                \
+//    aPropertyBinding,                                                     \
+//    ::YTE::TypeId<::YTE::DecomposeFieldPointer<decltype(aFieldPointer)>::ObjectType>())
+//
+//#define builder.Property<aGetterFunction, aSetterFunction>( aName)            \
+//  ::YTE::BindProperty<decltype(aGetterFunction), aGetterFunction,           \
+//               decltype(aSetterFunction), aSetterFunction>(                 \
+//    aName,                                                                  \
+//    ::YTE::TypeId<::YTE::DecomposePropertyType<decltype(aGetterFunction),   \
+//                                 decltype(aSetterFunction)>::ObjectType>())
 
-#define YTEParameterNames(...) {__VA_ARGS__}
-#define YTENoNames {}
-#define YTENoOverload
-#define YTENoSetter nullptr
-#define YTENoGetter nullptr
-
-#define YTEBindFunction(aFunctionPointer, aOverloadResolution, aFunctionName, aInitializerListOfNames)  \
-  ::YTE::BindFunction<decltype(aOverloadResolution aFunctionPointer),                                   \
-               aFunctionPointer,                                                                        \
-               std::initializer_list<const char*>aInitializerListOfNames.size()>(                       \
-    aFunctionName,                                                                                      \
-    ::YTE::TypeId<::YTE::DecomposeFunctionObjectType<decltype(aOverloadResolution aFunctionPointer)>::ObjectType>(), \
-    aInitializerListOfNames)
-
-#define YTEBindStaticOrFreeFunction(aType, aFunctionPointer, aOverloadResolution, aFunctionName, aInitializerListOfNames) \
-  ::YTE::BindFunction<decltype(aOverloadResolution aFunctionPointer),                                                     \
-                      aFunctionPointer,                                                                                   \
-                      std::initializer_list<const char*>aInitializerListOfNames.size()>(aFunctionName,                    \
-                                                                                        ::YTE::TypeId<aType>(),           \
-                                                                                        aInitializerListOfNames)
-
-  template<typename tEnumValueType, tEnumValueType tValue>
-  tEnumValueType GetEnumAsNativeType()
-  {
-    return tValue;
-  }
 
 
-#define YTERegisterType(aType) \
-  ::YTE::Type::AddGlobalType(::YTE::TypeId<aType>()->GetName(), ::YTE::TypeId<aType>()); \
-  YTEBindStaticOrFreeFunction(aType, &::YTE::TypeId<aType>, YTENoOverload, "GetStaticType", YTENoNames)
-
-#define YTEBindEnumValue(aEnumValue, aEnumName)    \
-  ::YTE::BindFunction<decltype(GetEnumAsNativeType<typename std::underlying_type<decltype(aEnumValue)>::type, aEnumValue>),    \
-                      GetEnumAsNativeType<typename std::underlying_type<decltype(aEnumValue)>::type, aEnumValue>,              \
-                      std::initializer_list<const char*>YTENoNames.size()>(aEnumName,                                          \
-                                                                           ::YTE::TypeId<decltype(aEnumValue)>(),              \
-                                                                           YTENoNames)
-
-#define YTEBindField(aFieldPointer, aName, aPropertyBinding)              \
-  ::YTE::BindField<decltype(aFieldPointer), aFieldPointer>(               \
-    aName,                                                                \
-    aPropertyBinding,                                                     \
-    ::YTE::TypeId<::YTE::DecomposeFieldPointer<decltype(aFieldPointer)>::ObjectType>())
-
-#define YTEBindProperty(aGetterFunction, aSetterFunction, aName)            \
-  ::YTE::BindProperty<decltype(aGetterFunction), aGetterFunction,           \
-               decltype(aSetterFunction), aSetterFunction>(                 \
-    aName,                                                                  \
-    ::YTE::TypeId<::YTE::DecomposePropertyType<decltype(aGetterFunction),   \
-                                 decltype(aSetterFunction)>::ObjectType>())
+  template<typename T>
+  inline Type* TypeId();
 
 
   class DocumentedObject : public Base
@@ -147,15 +141,11 @@ void Name::InitializeType()
       return (*this);
     }
 
-    std::string& Description()
-    {
-      return mDocumentation;
-    }
-
     template <typename tType, typename... tArguments>
     DocumentedObject& AddAttribute(tArguments &&...aArguments)
     {
-      mAttributes.Emplace(TypeId<tType>(), std::make_unique<tType>(this, std::forward<tArguments &&>(aArguments)...));
+      auto attribute = std::make_unique<tType>(this, std::forward<tArguments &&>(aArguments)...);
+      mAttributes.Emplace(TypeId<tType>(), std::move(attribute));
 
       return (*this);
     }

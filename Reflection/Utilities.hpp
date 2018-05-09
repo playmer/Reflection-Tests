@@ -87,6 +87,12 @@ namespace YTE
       return StringComparison::GreaterInString1;
     }
   }
+
+
+  template <typename ...tArguments>
+  inline void UnusedArguments(tArguments const &...)
+  {
+  }
 }
 
 #endif

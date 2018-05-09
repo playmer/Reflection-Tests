@@ -10,6 +10,9 @@
 
 namespace YTE
 {
+  inline constexpr std::nullptr_t NoGetter = nullptr;
+  inline constexpr std::nullptr_t NoSetter = nullptr;
+
   template <typename tFunctionSignature, tFunctionSignature tBoundFunction>
   constexpr auto SelectOverload()
   {
@@ -68,10 +71,10 @@ namespace YTE
         return *this;
       }
 
-      template <typename tType, typename... tArguments>
+      template <typename tAttribute, typename... tArguments>
       FunctionBuilder& AddAttribute(tArguments&& ...aArguments)
       {
-        mFunction->AddAttribute<tType>(std::forward<tArguments>(aArguments)...);
+        mFunction->AddAttribute<tAttribute>(std::forward<tArguments>(aArguments)...);
 
         return *this;
       }
@@ -184,7 +187,4 @@ namespace YTE
     TypeBuilder<tType> builder;
     builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
   }
-
-  inline constexpr nullptr_t NoGetter = nullptr;
-  inline constexpr nullptr_t NoSetter = nullptr;
 }

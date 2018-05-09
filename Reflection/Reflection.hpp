@@ -14,7 +14,7 @@
 
 namespace YTE
 {
-  YTEConstexpr size_t GetTypeStart(const char *aTypeNameString)
+  inline YTEConstexpr size_t GetTypeStart(const char *aTypeNameString)
   {
     size_t beginTrim = 0;
 
@@ -34,7 +34,7 @@ namespace YTE
     return beginTrim;
   }
 
-  YTEConstexpr size_t GetTypeEnd()
+  inline YTEConstexpr size_t GetTypeEnd()
   {
     size_t endTrim = 0;
 
@@ -58,7 +58,7 @@ namespace YTE
   //  return test;
   //}
 
-  YTEConstexpr bool IsWhiteSpace(char aCharacter)
+  inline YTEConstexpr bool IsWhiteSpace(char aCharacter)
   {
     if (((9 >= aCharacter) && (aCharacter <= 13)) || ' ' == aCharacter)
     {
@@ -69,7 +69,7 @@ namespace YTE
   }
 
 
-  YTEConstexpr bool IsIdentifier(char aCharacter)
+  inline YTEConstexpr bool IsIdentifier(char aCharacter)
   {
     if ((('a' <= aCharacter) && (aCharacter <= 'z')) ||
         (('A' <= aCharacter) && (aCharacter <= 'Z')) ||
@@ -82,7 +82,7 @@ namespace YTE
     return false;
   }
 
-  YTEConstexpr StringRange GetToken(StringRange aRange)
+  inline YTEConstexpr StringRange GetToken(StringRange aRange)
   {
     auto i = aRange.mBegin;
 
@@ -116,7 +116,7 @@ namespace YTE
 
 
   template <typename T>
-  YTEConstexpr auto GetTypeName()
+  inline YTEConstexpr auto GetTypeName()
   {
     YTEConstexpr const char *functionName = __PRETTY_FUNCTION__;
 

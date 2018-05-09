@@ -1,3 +1,6 @@
+#include <cstddef>
+#include <cstring>
+
 #include "../String/String.hpp"
 
 namespace YTE
@@ -184,7 +187,7 @@ namespace YTE
     size_t sizeOfNode = sizeof(StringNode) + aSize;
     StringNode *node = reinterpret_cast<StringNode*>(new char[sizeOfNode]);
     std::memcpy(node->mData, aString, aSize);
-    node->mData[aSize] = NULL;
+    node->mData[aSize] = '\0';
 
     node->mSize = aSize;
 

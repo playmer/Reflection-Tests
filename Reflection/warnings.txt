@@ -281,13 +281,13 @@ In file included from ./Meta.hpp:7:
  ^
 In file included from Attribute.cpp:1:
 In file included from ./Attribute.hpp:2:
-./Meta.hpp:190:30: warning: no previous extern declaration for non-static variable 'NoGetter' [-Wmissing-variable-declarations]
+./Meta.hpp:188:30: warning: no previous extern declaration for non-static variable 'NoGetter' [-Wmissing-variable-declarations]
   inline constexpr nullptr_t NoGetter = nullptr;
                              ^
-./Meta.hpp:191:30: warning: no previous extern declaration for non-static variable 'NoSetter' [-Wmissing-variable-declarations]
+./Meta.hpp:189:30: warning: no previous extern declaration for non-static variable 'NoSetter' [-Wmissing-variable-declarations]
   inline constexpr nullptr_t NoSetter = nullptr;
                              ^
-./Meta.hpp:192:2: warning: no newline at end of file [-Wnewline-eof]
+./Meta.hpp:190:2: warning: no newline at end of file [-Wnewline-eof]
 }
  ^
 In file included from Attribute.cpp:1:
@@ -471,9 +471,12 @@ Attribute.cpp:5:3: note: in instantiation of function template specialization 'Y
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Attribute>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 Attribute.cpp:7:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::Attribute>' requested here
     RegisterType<Attribute>();
     ^
@@ -492,9 +495,12 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Attribute>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 Attribute.cpp:7:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::Attribute>' requested here
     RegisterType<Attribute>();
     ^
@@ -517,9 +523,12 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Attribute>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 Attribute.cpp:7:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::Attribute>' requested here
     RegisterType<Attribute>();
     ^
@@ -902,13 +911,13 @@ In file included from ./Meta.hpp:9:
     YTEDeclareType(DropDownStrings);
                                    ^
 In file included from Type.cpp:2:
-./Meta.hpp:190:30: warning: no previous extern declaration for non-static variable 'NoGetter' [-Wmissing-variable-declarations]
+./Meta.hpp:188:30: warning: no previous extern declaration for non-static variable 'NoGetter' [-Wmissing-variable-declarations]
   inline constexpr nullptr_t NoGetter = nullptr;
                              ^
-./Meta.hpp:191:30: warning: no previous extern declaration for non-static variable 'NoSetter' [-Wmissing-variable-declarations]
+./Meta.hpp:189:30: warning: no previous extern declaration for non-static variable 'NoSetter' [-Wmissing-variable-declarations]
   inline constexpr nullptr_t NoSetter = nullptr;
                              ^
-./Meta.hpp:192:2: warning: no newline at end of file [-Wnewline-eof]
+./Meta.hpp:190:2: warning: no newline at end of file [-Wnewline-eof]
 }
  ^
 Type.cpp:7:48: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
@@ -970,9 +979,12 @@ Type.cpp:230:3: warning: extra qualification on member 'InitializeType' [-Wextra
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 Type.cpp:11:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::DocumentedObject>' requested here
     RegisterType<DocumentedObject>();
     ^
@@ -990,9 +1002,12 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 Type.cpp:11:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::DocumentedObject>' requested here
     RegisterType<DocumentedObject>();
     ^
@@ -1014,9 +1029,12 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 Type.cpp:11:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::DocumentedObject>' requested here
     RegisterType<DocumentedObject>();
     ^
@@ -1031,7 +1049,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1051,7 +1069,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1074,7 +1092,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1100,7 +1118,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1120,7 +1138,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1143,7 +1161,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1169,7 +1187,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1198,7 +1216,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::DocumentedObject::*)()>::BindFunction<&YTE::DocumentedObject::GetDocumentation>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1218,7 +1236,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::FunctionMaker<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:108:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
+./Meta.hpp:106:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
       setter = Detail::Meta::FunctionBinding<SetterFunctionSignature>:: template BindFunction<tSetterFunction>("Setter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1241,7 +1259,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::FunctionMaker<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:108:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
+./Meta.hpp:106:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
       setter = Detail::Meta::FunctionBinding<SetterFunctionSignature>:: template BindFunction<tSetterFunction>("Setter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1270,7 +1288,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::FunctionMaker<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:108:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
+./Meta.hpp:106:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
       setter = Detail::Meta::FunctionBinding<SetterFunctionSignature>:: template BindFunction<tSetterFunction>("Setter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1305,7 +1323,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::FunctionMaker<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:108:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
+./Meta.hpp:106:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
       setter = Detail::Meta::FunctionBinding<SetterFunctionSignature>:: template BindFunction<tSetterFunction>("Setter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1343,7 +1361,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::FunctionMaker<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:108:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
+./Meta.hpp:106:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
       setter = Detail::Meta::FunctionBinding<SetterFunctionSignature>:: template BindFunction<tSetterFunction>("Setter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1375,7 +1393,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::FunctionMaker<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:108:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
+./Meta.hpp:106:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::DocumentedObject &(YTE::DocumentedObject::*)(const char *)>::BindFunction<&YTE::DocumentedObject::SetDocumentation>' requested here
       setter = Detail::Meta::FunctionBinding<SetterFunctionSignature>:: template BindFunction<tSetterFunction>("Setter");
                                                                                  ^
 Type.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::DocumentedObject>::Property<&YTE::DocumentedObject::GetDocumentation, &YTE::DocumentedObject::SetDocumentation>' requested here
@@ -1401,7 +1419,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Property::*)()>::FunctionMaker<YTE::Type *(YTE::Property::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Property::*)()>::BindFunction<&YTE::Property::GetOwningType>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Property::*)()>::BindFunction<&YTE::Property::GetOwningType>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:174:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Property>::Property<&YTE::Property::GetOwningType, nullptr>' requested here
@@ -1430,7 +1448,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Property::*)()>::FunctionMaker<YTE::Type *(YTE::Property::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Property::*)()>::BindFunction<&YTE::Property::GetOwningType>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Property::*)()>::BindFunction<&YTE::Property::GetOwningType>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:174:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Property>::Property<&YTE::Property::GetOwningType, nullptr>' requested here
@@ -1450,7 +1468,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Function *(YTE::Property::*)()>::FunctionMaker<YTE::Function *(YTE::Property::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Function *(YTE::Property::*)()>::BindFunction<&YTE::Property::GetGetter>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Function *(YTE::Property::*)()>::BindFunction<&YTE::Property::GetGetter>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:180:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Property>::Property<&YTE::Property::GetGetter, nullptr>' requested here
@@ -1473,7 +1491,7 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Function *(YTE::Property::*)()>::FunctionMaker<YTE::Function *(YTE::Property::*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Function *(YTE::Property::*)()>::BindFunction<&YTE::Property::GetGetter>' requested here
+./Meta.hpp:105:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Function *(YTE::Property::*)()>::BindFunction<&YTE::Property::GetGetter>' requested here
       getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
                                                                                  ^
 Type.cpp:180:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Property>::Property<&YTE::Property::GetGetter, nullptr>' requested here
@@ -1856,13 +1874,13 @@ In file included from ./Meta.hpp:9:
     YTEDeclareType(DropDownStrings);
                                    ^
 In file included from main.cpp:2:
-./Meta.hpp:190:30: warning: no previous extern declaration for non-static variable 'NoGetter' [-Wmissing-variable-declarations]
+./Meta.hpp:188:30: warning: no previous extern declaration for non-static variable 'NoGetter' [-Wmissing-variable-declarations]
   inline constexpr nullptr_t NoGetter = nullptr;
                              ^
-./Meta.hpp:191:30: warning: no previous extern declaration for non-static variable 'NoSetter' [-Wmissing-variable-declarations]
+./Meta.hpp:189:30: warning: no previous extern declaration for non-static variable 'NoSetter' [-Wmissing-variable-declarations]
   inline constexpr nullptr_t NoSetter = nullptr;
                              ^
-./Meta.hpp:192:2: warning: no newline at end of file [-Wnewline-eof]
+./Meta.hpp:190:2: warning: no newline at end of file [-Wnewline-eof]
 }
  ^
 main.cpp:9:5: warning: extra ';' after member function definition [-Wextra-semi]
@@ -1941,9 +1959,12 @@ YTEDeclareExternalType(YTE::ControllerId);
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::XboxController>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 main.cpp:14:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::XboxController>' requested here
     RegisterType<XboxController>();
     ^
@@ -1961,9 +1982,12 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::XboxController>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 main.cpp:14:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::XboxController>' requested here
     RegisterType<XboxController>();
     ^
@@ -1985,9 +2009,12 @@ In file included from ./Meta.hpp:4:
 ./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
         auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
                                                            ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
+./Meta.hpp:88:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
       auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
                                                                                   ^
+./Meta.hpp:185:22: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::XboxController>::Function<&YTE::TypeId>' requested here
+    builder.template Function<&::YTE::TypeId<tType>>("GetStaticType");
+                     ^
 main.cpp:14:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::XboxController>' requested here
     RegisterType<XboxController>();
     ^
@@ -2071,612 +2098,4 @@ In file included from ./Type.hpp:13:
 ./Reflection.hpp:224:2: warning: no newline at end of file [-Wnewline-eof]
 }
  ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-In file included from ./Type.hpp:15:
-./String/String.hpp:156:7: warning: no newline at end of file [-Wnewline-eof]
-#endif
-      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:24:23: warning: extra ';' after member function definition [-Wextra-semi]
-    virtual ~Base() {};
-                      ^
-./Type.hpp:116:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(DocumentedObject);
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-./Type.hpp:116:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-./Type.hpp:116:37: warning: extra ';' inside a class [-Wextra-semi]
-    YTEDeclareType(DocumentedObject);
-                                    ^
-./Type.hpp:176:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(Type)
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-./Type.hpp:176:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-./Type.hpp:482:101: warning: extra ';' after member function definition [-Wextra-semi]
-    OrderedMultiMap<std::string, std::unique_ptr<Property>>& GetProperties() { return mProperties; };
-                                                                                                    ^
-./Type.hpp:483:93: warning: extra ';' after member function definition [-Wextra-semi]
-    OrderedMultiMap<std::string, std::unique_ptr<Property>>& GetFields() { return mFields; };
-                                                                                            ^
-./Type.hpp:484:99: warning: extra ';' after member function definition [-Wextra-semi]
-    OrderedMultiMap<std::string, std::unique_ptr<Function>>& GetFunctions() { return mFunctions; };
-                                                                                                  ^
-./Type.hpp:629:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(void)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:630:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(bool)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:631:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::s8)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:632:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::i8)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:633:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::i16)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:634:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::i32)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:635:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::i64)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:636:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::u8)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:637:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::u16)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:638:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::u32)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:639:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::u64)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:640:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(float)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:641:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(double)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:642:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(std::string)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-./Type.hpp:643:1: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-YTEDeclareExternalType(YTE::String)
-^
-./Type.hpp:612:19: note: expanded from macro 'YTEDeclareExternalType'
-      static Type type{ #Name,                             \
-                  ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:5:
-./Any.hpp:241:2: warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:6:
-./Function.hpp:12:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(Function)
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:6:
-./Function.hpp:12:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:6:
-./Function.hpp:404:2: warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:7:
-In file included from ./Field.hpp:3:
-./Property.hpp:13:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(Property)
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:7:
-In file included from ./Field.hpp:3:
-./Property.hpp:13:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:7:
-In file included from ./Field.hpp:3:
-./Property.hpp:52:2: warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:7:
-./Field.hpp:12:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(Field)
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:7:
-./Field.hpp:12:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:7:
-./Field.hpp:96:2: warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:12:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(Attribute)
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:12:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:18:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(Serializable);
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:18:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:18:33: warning: extra ';' inside a class [-Wextra-semi]
-    YTEDeclareType(Serializable);
-                                ^
-./Attribute.hpp:25:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(RunInEditor);
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:25:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:25:32: warning: extra ';' inside a class [-Wextra-semi]
-    YTEDeclareType(RunInEditor);
-                               ^
-./Attribute.hpp:32:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(EditableColor);
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:32:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:32:34: warning: extra ';' inside a class [-Wextra-semi]
-    YTEDeclareType(EditableColor);
-                                 ^
-./Attribute.hpp:39:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(EditorProperty);
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:39:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:39:35: warning: extra ';' inside a class [-Wextra-semi]
-    YTEDeclareType(EditorProperty);
-                                  ^
-./Attribute.hpp:50:5: warning: extra ';' after member function definition [-Wextra-semi]
-    YTEDeclareType(DropDownStrings);
-    ^
-./Type.hpp:48:55: note: expanded from macro 'YTEDeclareType'
-static ::YTE::Type* GetStaticType() { return &sType; };               \
-                                                      ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:50:5: warning: extra ';' after member function definition [-Wextra-semi]
-./Type.hpp:49:42: note: expanded from macro 'YTEDeclareType'
-::YTE::Type* GetType() { return &sType; };                            \
-                                         ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:9:
-./Attribute.hpp:50:36: warning: extra ';' inside a class [-Wextra-semi]
-    YTEDeclareType(DropDownStrings);
-                                   ^
-In file included from Function.cpp:1:
-./Meta.hpp:190:30: warning: no previous extern declaration for non-static variable 'NoGetter' [-Wmissing-variable-declarations]
-  inline constexpr nullptr_t NoGetter = nullptr;
-                             ^
-./Meta.hpp:191:30: warning: no previous extern declaration for non-static variable 'NoSetter' [-Wmissing-variable-declarations]
-  inline constexpr nullptr_t NoSetter = nullptr;
-                             ^
-./Meta.hpp:192:2: warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-Function.cpp:6:3: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-  YTEDefineType(Function)
-  ^
-./Type.hpp:54:19: note: expanded from macro 'YTEDefineType'
-::YTE::Type Name::sType{#Name,                                  \
-                  ^
-Function.cpp:6:3: warning: declaration requires a global destructor [-Wglobal-constructors]
-./Type.hpp:54:19: note: expanded from macro 'YTEDefineType'
-::YTE::Type Name::sType{#Name,                                  \
-                  ^
-Function.cpp:28:9: warning: no previous extern declaration for non-static variable 'mType' [-Wmissing-variable-declarations]
-  Type *mType;
-        ^
-Function.cpp:29:15: warning: no previous extern declaration for non-static variable 'mName' [-Wmissing-variable-declarations]
-  std::string mName;
-              ^
-Function.cpp:29:15: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-Function.cpp:29:15: warning: declaration requires a global destructor [-Wglobal-constructors]
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:547:19: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Pointer, static_cast<T**>(nullptr), true};
-                  ^
-./Function.hpp:284:54: note: in instantiation of function template specialization 'YTE::TypeId<YTE::Type *>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
-      auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
-                                                                                  ^
-Function.cpp:8:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::Function>' requested here
-    RegisterType<Function>();
-    ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:547:19: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Pointer, static_cast<T**>(nullptr), true};
-                  ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<YTE::Type *>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:284:54: note: in instantiation of function template specialization 'YTE::TypeId<YTE::Type *>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
-      auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
-                                                                                  ^
-Function.cpp:8:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::Function>' requested here
-    RegisterType<Function>();
-    ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:319:9: warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
-        default:
-        ^
-./Type.hpp:319:9: warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
-./Type.hpp:547:19: note: in instantiation of function template specialization 'YTE::Type::Type<YTE::Type *>' requested here
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Pointer, static_cast<T**>(nullptr), true};
-                  ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<YTE::Type *>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:284:54: note: in instantiation of function template specialization 'YTE::TypeId<YTE::Type *>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::FunctionMaker<YTE::Type *(*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:90:83: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(*)()>::BindFunction<&YTE::TypeId>' requested here
-      auto function = Detail::Meta::FunctionBinding<FunctionSignature>:: template BindFunction<tBoundFunction>(aName);
-                                                                                  ^
-Function.cpp:8:5: note: in instantiation of function template specialization 'YTE::RegisterType<YTE::Function>' requested here
-    RegisterType<Function>();
-    ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:547:19: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Pointer, static_cast<T**>(nullptr), true};
-                  ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<YTE::Function *>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:62:31: note: in instantiation of function template specialization 'YTE::TypeId<YTE::Function *>' requested here
-      aFunction->AddParameter(TypeId<T>());
-                              ^
-./Function.hpp:80:9: note: in instantiation of function template specialization 'YTE::Detail::Meta::AddParameter<YTE::Function *>' requested here
-        AddParameter<First>(aFunction);
-        ^
-./Function.hpp:332:66: note: in instantiation of member function 'YTE::Detail::Meta::ParseArguments<YTE::Function *>::Parse' requested here
-          Detail::Meta::ParseArguments<tObject*, tArguments...>::Parse(function);
-                                                                 ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Function::*)() const>::FunctionMaker<YTE::Type *(YTE::Function::*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Function::*)() const>::BindFunction<&YTE::Function::GetOwningType>' requested here
-      getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
-                                                                                 ^
-Function.cpp:11:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Function>::Property<&YTE::Function::GetOwningType, nullptr>' requested here
-    builder.Property<&Function::GetOwningType, NoSetter>( "OwningType")
-            ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:319:9: warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
-        default:
-        ^
-./Type.hpp:547:19: note: in instantiation of function template specialization 'YTE::Type::Type<YTE::Function *>' requested here
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Pointer, static_cast<T**>(nullptr), true};
-                  ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<YTE::Function *>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:62:31: note: in instantiation of function template specialization 'YTE::TypeId<YTE::Function *>' requested here
-      aFunction->AddParameter(TypeId<T>());
-                              ^
-./Function.hpp:80:9: note: in instantiation of function template specialization 'YTE::Detail::Meta::AddParameter<YTE::Function *>' requested here
-        AddParameter<First>(aFunction);
-        ^
-./Function.hpp:332:66: note: in instantiation of member function 'YTE::Detail::Meta::ParseArguments<YTE::Function *>::Parse' requested here
-          Detail::Meta::ParseArguments<tObject*, tArguments...>::Parse(function);
-                                                                 ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Function::*)() const>::FunctionMaker<YTE::Type *(YTE::Function::*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<YTE::Type *(YTE::Function::*)() const>::BindFunction<&YTE::Function::GetOwningType>' requested here
-      getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
-                                                                                 ^
-Function.cpp:11:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Function>::Property<&YTE::Function::GetOwningType, nullptr>' requested here
-    builder.Property<&Function::GetOwningType, NoSetter>( "OwningType")
-            ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:558:19: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Reference, static_cast<T*>(nullptr)};
-                  ^
-./Function.hpp:329:54: note: in instantiation of function template specialization 'YTE::TypeId<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::BindFunction<&YTE::Function::GetName>' requested here
-      getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
-                                                                                 ^
-Function.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Function>::Property<&YTE::Function::GetName, nullptr>' requested here
-    builder.Property<&Function::GetName, NoSetter>( "Name")
-            ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:558:19: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Reference, static_cast<T*>(nullptr)};
-                  ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:329:54: note: in instantiation of function template specialization 'YTE::TypeId<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::BindFunction<&YTE::Function::GetName>' requested here
-      getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
-                                                                                 ^
-Function.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Function>::Property<&YTE::Function::GetName, nullptr>' requested here
-    builder.Property<&Function::GetName, NoSetter>( "Name")
-            ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:570:19: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Const, static_cast<const T*>(nullptr)};
-                  ^
-./Type.hpp:558:32: note: in instantiation of function template specialization 'YTE::TypeId<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > >' requested here
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Reference, static_cast<T*>(nullptr)};
-                               ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:329:54: note: in instantiation of function template specialization 'YTE::TypeId<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::BindFunction<&YTE::Function::GetName>' requested here
-      getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
-                                                                                 ^
-Function.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Function>::Property<&YTE::Function::GetName, nullptr>' requested here
-    builder.Property<&Function::GetName, NoSetter>( "Name")
-            ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:570:19: warning: declaration requires an exit-time destructor [-Wexit-time-destructors]
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Const, static_cast<const T*>(nullptr)};
-                  ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > >::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Type.hpp:558:32: note: in instantiation of function template specialization 'YTE::TypeId<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > >' requested here
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Reference, static_cast<T*>(nullptr)};
-                               ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:329:54: note: in instantiation of function template specialization 'YTE::TypeId<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::BindFunction<&YTE::Function::GetName>' requested here
-      getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
-                                                                                 ^
-Function.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Function>::Property<&YTE::Function::GetName, nullptr>' requested here
-    builder.Property<&Function::GetName, NoSetter>( "Name")
-            ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:280:9: warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
-        default:
-        ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:329:54: note: in instantiation of function template specialization 'YTE::TypeId<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::BindFunction<&YTE::Function::GetName>' requested here
-      getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
-                                                                                 ^
-Function.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Function>::Property<&YTE::Function::GetName, nullptr>' requested here
-    builder.Property<&Function::GetName, NoSetter>( "Name")
-            ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:4:
-./Type.hpp:280:9: warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
-        default:
-        ^
-./Type.hpp:558:19: note: in instantiation of function template specialization 'YTE::Type::Type<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > >' requested here
-      static Type type{ ::YTE::TypeId<T>(), Type::Modifier::Reference, static_cast<T*>(nullptr)};
-                  ^
-./Type.hpp:580:35: note: in instantiation of member function 'YTE::TypeIdentification<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>::TypeId' requested here
-    return TypeIdentification<T>::TypeId();
-                                  ^
-./Function.hpp:329:54: note: in instantiation of function template specialization 'YTE::TypeId<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &>' requested here
-                                                     TypeId<tReturn>(),
-                                                     ^
-./Function.hpp:384:60: note: in instantiation of member function 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::FunctionMaker<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)()>::MakeFunction' requested here
-        auto function = FunctionMaker<tFunctionSignature>::MakeFunction(aName);
-                                                           ^
-./Meta.hpp:107:82: note: in instantiation of function template specialization 'YTE::Detail::Meta::FunctionBinding<const std::basic_string<char, std::char_traits<char>, std::allocator<char> > &(YTE::Function::*)() const>::BindFunction<&YTE::Function::GetName>' requested here
-      getter = Detail::Meta::FunctionBinding<GetterFunctionSignature>:: template BindFunction<tGetterFunction>("Getter");
-                                                                                 ^
-Function.cpp:13:13: note: in instantiation of function template specialization 'YTE::TypeBuilder<YTE::Function>::Property<&YTE::Function::GetName, nullptr>' requested here
-    builder.Property<&Function::GetName, NoSetter>( "Name")
-            ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:7:
-In file included from ./Field.hpp:3:
-./Property.hpp:41:20: warning: unused function template 'BindProperty' [-Wunused-template]
-  static Property& BindProperty(const char *aName, Type *aType)
-                   ^
-In file included from Function.cpp:1:
-In file included from ./Meta.hpp:7:
-./Field.hpp:67:17: warning: unused function template 'BindField' [-Wunused-template]
-  static Field& BindField(const char *aName, PropertyBinding aBinding, Type *aType)
-                ^
-90 warnings generated.
-In file included from String/String.cpp:1:
-String/../String/String.hpp:156:7: warning: no newline at end of file [-Wnewline-eof]
-#endif
-      ^
-String/String.cpp:176:50: warning: use of old-style cast [-Wold-style-cast]
-      hash = hash ^ ((hash << 5) + (hash >> 2) + (char)aString[i - 1]);
-                                                 ^     ~~~~~~~~~~~~~~
-String/String.cpp:176:50: warning: implicit conversion changes signedness: 'char' to 'unsigned long long' [-Wsign-conversion]
-      hash = hash ^ ((hash << 5) + (hash >> 2) + (char)aString[i - 1]);
-                                               ~ ^~~~~~~~~~~~~~~~~~~~
-String/String.cpp:219:2: warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-4 warnings generated.
-String-709db9.o : warning LNK4049: locally defined symbol __std_terminate imported
-Attribute-c208c4.o : warning LNK4217: locally defined symbol __std_terminate imported in function "int `public: __cdecl std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >::~basic_string<char,struct std::char_traits<char>,class std::allocator<char> >(void)'::`1'::dtor$3" (?dtor$3@?0???1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@XZ@4HA)
-Type-f0087a.o : warning LNK4049: locally defined symbol __std_terminate imported
-main-f1735c.o : warning LNK4049: locally defined symbol __std_terminate imported
-Function-926128.o : warning LNK4049: locally defined symbol __std_terminate imported
-Type-f0087a.o : warning LNK4217: locally defined symbol _CxxThrowException imported in function "int `public: __cdecl std::vector<struct YTE::Function::Parameter,class std::allocator<struct YTE::Function::Parameter> >::vector<struct YTE::Function::Parameter,class std::allocator<struct YTE::Function::Parameter> >(class vector<struct YTE::Function::Parameter,class std::allocator<struct YTE::Function::Parameter> >::catch$2 const &)'::`1'::catch$2" (?catch$2@?0???0?$vector@UParameter@Function@YTE@@V?$allocator@UParameter@Function@YTE@@@std@@@std@@QEAA@AEBV01@@Z@4HA)
-Function-926128.o : warning LNK4049: locally defined symbol _CxxThrowException imported
-String-709db9.o : warning LNK4049: locally defined symbol _CxxThrowException imported
-Attribute-c208c4.o : error LNK2019: unresolved external symbol __imp___RTDynamicCast referenced in function "public: __cdecl YTE::DropDownStrings::DropDownStrings(class YTE::DocumentedObject *,class std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > > (__cdecl*)(class YTE::Component *))" (??0DropDownStrings@YTE@@QEAA@PEAVDocumentedObject@1@P6A?AV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@PEAVComponent@1@@Z@Z)
-a.exe : fatal error LNK1120: 1 unresolved externals
-clang++.exe: error: linker command failed with exit code 1120 (use -v to see invocation)
+^C

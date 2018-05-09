@@ -9,6 +9,8 @@
 #include <cstdint>
 
 #include <memory>
+#include <cstddef>
+#include <cstring>
 #include <string>
 #include <unordered_map>
 

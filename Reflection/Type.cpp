@@ -226,14 +226,13 @@ namespace YTE
     RegisterType<Field>();
     TypeBuilder<Field> builder;
   }
-
-  YTEDefineExternalType(YTE::String)
-  {
-    RegisterType<YTE::String>();
-    TypeBuilder<YTE::String> builder;
-  }
 }
 
+YTEDefineExternalType(YTE::String)
+{
+  RegisterType<YTE::String>();
+  TypeBuilder<YTE::String> builder;
+}
 
 YTEDefineExternalType(YTE::s8)
 {
